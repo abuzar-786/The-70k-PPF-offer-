@@ -41,20 +41,24 @@ export async function POST(request: Request) {
   }
   if (!input)
     return reply(
-      { error: "Enter a valid email address or Indian WhatsApp number." },
+      { error: "Enter a valid email address and Indian WhatsApp number." },
       400,
     );
   const submittedAt = new Date().toISOString();
   const record = {
     ...input,
     submittedAt,
+    captureMethod: "email_and_whatsapp",
+    deliveryChannel: "email",
     sourceCampaign: CAMPAIGN,
     consent: {
       guideRequested: true,
       marketing: input.marketingConsent,
       noticeVersion: NOTICE_VERSION,
       recordedAt: submittedAt,
-      channel: input.method,
+      channel: "email",
+      whatsappGuideRequested: false,
+      marketingChannels: input.marketingConsent ? ["email", "whatsapp"] : [],
     },
   };
   const downloadUrl = (await guidePath()) ? "/api/guide" : null;

@@ -31,7 +31,8 @@ test("validates email and rejects unknown methods", () => {
 test("requires an explicit boolean consent and UUID; bounds attribution and prevents client campaign injection", () => {
   const valid = {
     method: "email",
-    contact: "owner@studio.com",
+    email: "owner@studio.com",
+    whatsapp: "+91 98765 43210",
     marketingConsent: false,
     requestId: id,
     utm: {
@@ -43,6 +44,12 @@ test("requires an explicit boolean consent and UUID; bounds attribution and prev
   };
   const result = validateLead(valid)!;
   assert.equal(result.marketingConsent, false);
+  assert.equal(result.contact, "owner@studio.com");
+  assert.equal(result.whatsapp, "+919876543210");
+  assert.equal(validateLead({ ...valid, email: "invalid" }), null);
+  assert.equal(validateLead({ ...valid, whatsapp: "invalid" }), null);
+  assert.equal(validateLead({ ...valid, whatsapp: undefined }), null);
+  assert.equal(validateLead({ ...valid, method: "whatsapp" }), null);
   assert.equal(result.utm.utm_source.length, 200);
   assert.equal(result.utm.utm_campaign, "premiumppf");
   assert.equal(result.utm.untrusted, undefined);

@@ -1,7 +1,9 @@
 export const CAMPAIGN = "70k-ppf-offer-secret";
-export const NOTICE_VERSION = "guide-request-v1";
+export const NOTICE_VERSION = "guide-request-email-and-whatsapp-v2";
 export type LeadInput = {
-  method: "email" | "whatsapp";
+  method: "email";
+  email: string;
+  whatsapp: string;
   contact: string;
   requestId: string;
   marketingConsent: boolean;
@@ -27,8 +29,9 @@ export function validateLead(value: unknown): LeadInput | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const v = value as Record<string, unknown>;
   if (
-    (v.method !== "email" && v.method !== "whatsapp") ||
-    typeof v.contact !== "string" ||
+    v.method !== "email" ||
+    typeof v.email !== "string" ||
+    typeof v.whatsapp !== "string" ||
     typeof v.marketingConsent !== "boolean" ||
     typeof v.requestId !== "string" ||
     !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
@@ -36,8 +39,9 @@ export function validateLead(value: unknown): LeadInput | null {
     )
   )
     return null;
-  const contact = normalizeContact(v.method, v.contact);
-  if (!contact) return null;
+  const email = normalizeContact("email", v.email);
+  const whatsapp = normalizeContact("whatsapp", v.whatsapp);
+  if (!email || !whatsapp) return null;
   const utm: Record<string, string> = {};
   if (v.utm && typeof v.utm === "object" && !Array.isArray(v.utm)) {
     for (const key of [
@@ -54,7 +58,9 @@ export function validateLead(value: unknown): LeadInput | null {
   }
   return {
     method: v.method,
-    contact,
+    contact: email,
+    email,
+    whatsapp,
     requestId: v.requestId,
     marketingConsent: v.marketingConsent,
     utm,

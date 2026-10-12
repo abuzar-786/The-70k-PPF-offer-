@@ -22,35 +22,48 @@ const clientReady = () => true;
 const serverReady = () => false;
 export default function LeadForm({ development }: { development: boolean }) {
   const ready = useSyncExternalStore(subscribe, clientReady, serverReady);
-  const [method, setMethod] = useState<"email" | "whatsapp">("email");
-  const [contacts, setContacts] = useState({ email: "", whatsapp: "" });
+  const [email, setEmail] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
   const [marketing, setMarketing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [invalid, setInvalid] = useState<"email" | "whatsapp" | null>(null);
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const busy = useRef(false),
     started = useRef(false),
     attempt = useRef<{ key: string; id: string } | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const start = () => {
+  const emailRef = useRef<HTMLInputElement>(null),
+    whatsappRef = useRef<HTMLInputElement>(null);
+  function start() {
     if (!started.current) {
       started.current = true;
-      track("lead_form_started", { method });
+      track("lead_form_started", { method: "email" });
     }
-  };
+  }
+  function clearError() {
+    setError("");
+    setInvalid(null);
+  }
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy.current || receipt) return;
-    const contact = normalizeContact(method, contacts[method]);
-    if (!contact) {
-      setError(
-        method === "email"
-          ? "Enter a valid email address."
-          : "Enter a valid 10-digit Indian mobile number, optionally with +91.",
-      );
-      inputRef.current?.focus();
+    const normalizedEmail = normalizeContact("email", email);
+    const normalizedWhatsapp = normalizeContact("whatsapp", whatsapp);
+    if (!normalizedEmail) {
+      setError("Enter a valid email address.");
+      setInvalid("email");
+      emailRef.current?.focus();
       return;
     }
+    if (!normalizedWhatsapp) {
+      setError(
+        "Enter a valid 10-digit Indian WhatsApp number, optionally with +91.",
+      );
+      setInvalid("whatsapp");
+      whatsappRef.current?.focus();
+      return;
+    }
+    const params = new URLSearchParams(window.location.search);
     const utm = Object.fromEntries(
       [
         "utm_source",
@@ -58,24 +71,28 @@ export default function LeadForm({ development }: { development: boolean }) {
         "utm_campaign",
         "utm_term",
         "utm_content",
-      ].map((key) => [
-        key,
-        new URLSearchParams(window.location.search).get(key) || "",
-      ]),
+      ].map((key) => [key, params.get(key) || ""]),
     );
-    const key = JSON.stringify({ method, contact, marketing, utm });
+    const key = JSON.stringify({
+      email: normalizedEmail,
+      whatsapp: normalizedWhatsapp,
+      marketing,
+      utm,
+    });
     if (attempt.current?.key !== key)
       attempt.current = { key, id: crypto.randomUUID() };
     busy.current = true;
     setLoading(true);
-    setError("");
+    clearError();
     try {
       const response = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          method,
-          contact,
+          method: "email",
+          email: normalizedEmail,
+          whatsapp: normalizedWhatsapp,
+          contact: normalizedEmail,
           marketingConsent: marketing,
           requestId: attempt.current.id,
           utm,
@@ -90,7 +107,7 @@ export default function LeadForm({ development }: { development: boolean }) {
         );
       setReceipt(result);
       track("lead_form_submitted", {
-        method,
+        method: "email",
         mode: result.status,
         delivery: result.delivery,
       });
@@ -121,7 +138,7 @@ export default function LeadForm({ development }: { development: boolean }) {
           <a
             className="primary-button download-button"
             href={receipt.downloadUrl}
-            onClick={() => track("guide_download_clicked", { method })}
+            onClick={() => track("guide_download_clicked", { method: "email" })}
           >
             <Download size={18} /> Download Your Free Guide
           </a>
@@ -146,62 +163,65 @@ export default function LeadForm({ development }: { development: boolean }) {
           be submitted without it.
         </p>
       </noscript>
-      <fieldset disabled={loading || !ready} className="channel-fieldset">
-        <legend>Receive your guide via</legend>
-        <div className="segmented-control">
-          {(["email", "whatsapp"] as const).map((channel) => (
-            <label
-              key={channel}
-              className={method === channel ? "selected" : ""}
-            >
-              <input
-                type="radio"
-                name="method"
-                value={channel}
-                checked={method === channel}
-                onChange={() => {
-                  setMethod(channel);
-                  setError("");
-                }}
-              />
-              {channel === "email" ? (
-                <Mail size={17} />
-              ) : (
-                <MessageCircle size={17} />
-              )}
-              <span>{channel === "email" ? "Email" : "WhatsApp"}</span>
-              {method === channel && <Check size={14} />}
-            </label>
-          ))}
+      <div className="form-fields">
+        <div className="field">
+          <label className="input-label" htmlFor="email">
+            Your email address
+          </label>
+          <div className="input-wrap">
+            <Mail size={18} />
+            <input
+              ref={emailRef}
+              id="email"
+              name="email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              placeholder="you@yourstudio.com"
+              value={email}
+              onFocus={start}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                clearError();
+              }}
+              required
+              maxLength={254}
+              disabled={loading || !ready}
+              aria-invalid={invalid === "email"}
+              aria-describedby={invalid === "email" ? "form-error" : undefined}
+            />
+          </div>
         </div>
-      </fieldset>
-      <label className="input-label" htmlFor="contact">
-        {method === "email" ? "Your email address" : "Your WhatsApp number"}
-      </label>
-      <div className="input-wrap">
-        {method === "email" ? <Mail size={18} /> : <MessageCircle size={18} />}
-        <input
-          ref={inputRef}
-          id="contact"
-          name="contact"
-          type={method === "email" ? "email" : "tel"}
-          inputMode={method === "email" ? "email" : "tel"}
-          autoComplete={method === "email" ? "email" : "tel"}
-          placeholder={
-            method === "email" ? "you@yourstudio.com" : "+91 98765 43210"
-          }
-          value={contacts[method]}
-          onFocus={start}
-          onChange={(e) => {
-            setContacts({ ...contacts, [method]: e.target.value });
-            setError("");
-          }}
-          required
-          maxLength={method === "email" ? 254 : 24}
-          disabled={loading || !ready}
-          aria-invalid={!!error}
-          aria-describedby={error ? "form-error" : undefined}
-        />
+        <div className="field">
+          <label className="input-label" htmlFor="whatsapp">
+            Your WhatsApp number
+          </label>
+          <div className="input-wrap">
+            <MessageCircle size={18} />
+            <input
+              ref={whatsappRef}
+              id="whatsapp"
+              name="whatsapp"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              placeholder="+91 98765 43210"
+              value={whatsapp}
+              onFocus={start}
+              onChange={(e) => {
+                setWhatsapp(e.target.value);
+                clearError();
+              }}
+              required
+              maxLength={24}
+              disabled={loading || !ready}
+              aria-invalid={invalid === "whatsapp"}
+              aria-describedby={
+                invalid === "whatsapp" ? "form-error" : undefined
+              }
+            />
+          </div>
+        </div>
       </div>
       <label className="marketing-consent">
         <input
@@ -211,8 +231,8 @@ export default function LeadForm({ development }: { development: boolean }) {
           onChange={(e) => setMarketing(e.target.checked)}
         />
         <span>
-          Yes, I’d also like occasional studio growth tips and offers via my
-          chosen channel. <span className="optional">(Optional)</span>
+          Yes, I’d also like occasional studio growth tips and offers by email
+          and WhatsApp. <span className="optional">(Optional)</span>
         </span>
       </label>
       {error && (

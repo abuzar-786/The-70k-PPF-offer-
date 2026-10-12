@@ -12,6 +12,11 @@ for (const width of [360, 390, 768, 1024, 1440]) {
     await expect(
       page.getByRole("button", { name: "Get My Free Guide" }),
     ).toBeVisible();
+    if (width < 768) {
+      const form = await page.locator(".form-shell").boundingBox();
+      const cover = await page.locator(".guide-card").boundingBox();
+      expect(form!.y).toBeLessThan(cover!.y);
+    }
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
@@ -29,7 +34,7 @@ for (const width of [360, 390, 768, 1024, 1440]) {
     });
   });
 }
-test("channel switching, client validation, explicit local receipt and privacy defaults", async ({
+test("combined fields, client validation, explicit local receipt and privacy defaults", async ({
   page,
 }) => {
   await page.addInitScript(() => {
@@ -50,15 +55,18 @@ test("channel switching, client validation, explicit local receipt and privacy d
   await expect(
     page.getByRole("checkbox", { name: /Allow optional analytics/ }),
   ).not.toBeChecked();
-  await page.getByLabel("WhatsApp", { exact: true }).check();
+  await expect(page.getByRole("radio")).toHaveCount(0);
+  await page
+    .getByLabel("Your email address")
+    .fill(`browser-${randomUUID()}@studio.example`);
   await expect(page.getByLabel("Your WhatsApp number")).toBeVisible();
-  await expect(page.getByLabel("Your email address")).toHaveCount(0);
+  await expect(page.getByLabel("Your email address")).toBeVisible();
   await page.getByLabel("Your WhatsApp number").fill("1234");
   await page.getByRole("button", { name: "Get My Free Guide" }).click();
   await expect(page.locator("#form-error")).toContainText(
     "valid 10-digit Indian",
   );
-  await page.getByLabel("Email", { exact: true }).check();
+  await page.getByLabel("Your WhatsApp number").fill("+91 98765 43210");
   await page
     .getByLabel("Your email address")
     .fill(`browser-${randomUUID()}@studio.example`);
@@ -90,8 +98,9 @@ test("API validates, stores consent/attribution and deduplicates retries", async
 }) => {
   const id = randomUUID();
   const data = {
-    method: "whatsapp",
-    contact: "+91 98765 43210",
+    method: "email",
+    email: "owner@studio.example",
+    whatsapp: "+91 98765 43210",
     requestId: id,
     marketingConsent: false,
     utm: { utm_source: "integration-test" },
@@ -105,7 +114,12 @@ test("API validates, stores consent/attribution and deduplicates retries", async
       "utf8",
     ),
   );
-  expect(stored.contact).toBe("+919876543210");
+  expect(stored.email).toBe("owner@studio.example");
+  expect(stored.whatsapp).toBe("+919876543210");
+  expect(stored.captureMethod).toBe("email_and_whatsapp");
+  expect(stored.deliveryChannel).toBe("email");
+  expect(stored.consent.whatsappGuideRequested).toBe(false);
+  expect(stored.consent.marketingChannels).toEqual([]);
   expect(stored.consent.marketing).toBe(false);
   expect(stored.utm.utm_source).toBe("integration-test");
   expect(stored.sourceCampaign).toBe("70k-ppf-offer-secret");
@@ -121,14 +135,14 @@ test("API validates, stores consent/attribution and deduplicates retries", async
   expect(
     (
       await request.post("/api/leads", {
-        data: { ...data, contact: "+91 87654 32109" },
+        data: { ...data, whatsapp: "+91 87654 32109" },
       })
     ).status(),
   ).toBe(409);
   expect(
     (
       await request.post("/api/leads", {
-        data: { ...data, requestId: randomUUID(), contact: "1234" },
+        data: { ...data, requestId: randomUUID(), whatsapp: "1234" },
       })
     ).status(),
   ).toBe(400);
@@ -161,6 +175,7 @@ test("failed request exposes retry state instead of a false success", async ({
     }),
   );
   await page.getByLabel("Your email address").fill("retry@studio.example");
+  await page.getByLabel("Your WhatsApp number").fill("9876543210");
   await page.getByRole("button", { name: "Get My Free Guide" }).click();
   await expect(page.locator("#form-error")).toContainText("not available");
   await expect(
@@ -187,6 +202,7 @@ test("pending submission disables controls and blocks concurrent attempts", asyn
   await page
     .getByLabel("Your email address")
     .fill(`loading-${randomUUID()}@studio.example`);
+  await page.getByLabel("Your WhatsApp number").fill("9876543210");
   await page.getByRole("button", { name: "Get My Free Guide" }).click();
   await expect(
     page.getByRole("button", { name: "Saving your request…" }),

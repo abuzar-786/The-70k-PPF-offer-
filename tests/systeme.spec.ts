@@ -38,7 +38,7 @@ for (const width of [360, 390, 768, 1024, 1440]) {
     });
   });
 }
-test("Systeme validates both channels and never invents capture without integration", async ({
+test("Systeme validates both contact fields and never invents capture without integration", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -47,7 +47,9 @@ test("Systeme validates both channels and never invents capture without integrat
   await expect(
     page.getByRole("checkbox", { name: /occasional studio/ }),
   ).not.toBeChecked();
-  await page.getByLabel("WhatsApp", { exact: true }).check();
+  await expect(page.getByRole("radio")).toHaveCount(0);
+  await page.getByLabel("Your email address").fill("owner@studio.example");
+  await page.getByLabel("Your WhatsApp number").fill("9876543210");
   await page.getByLabel("Your WhatsApp number").fill("1234");
   await page.getByRole("button", { name: "Get My Free Guide" }).click();
   await expect(page.locator("#ppf-form-error")).toContainText(
@@ -59,7 +61,7 @@ test("Systeme validates both channels and never invents capture without integrat
     "No contact details have been saved",
   );
   await expect(page.getByRole("status")).toHaveCount(0);
-  await page.getByLabel("Email", { exact: true }).check();
+
   await expect(page.getByLabel("Your email address")).toBeVisible();
   expect(errors).toEqual([]);
 });
@@ -105,6 +107,7 @@ test("Systeme configured public API handles loading, receipt, attribution, and P
   });
   await serve(page, configured);
   await page.getByLabel("Your email address").fill("owner@studio.example");
+  await page.getByLabel("Your WhatsApp number").fill("9876543210");
   await page.getByRole("button", { name: "Get My Free Guide" }).click();
   await expect(
     page.getByRole("button", { name: "Saving your request…" }),
@@ -124,7 +127,10 @@ test("Systeme configured public API handles loading, receipt, attribution, and P
   await expect(
     page.getByRole("link", { name: "Download Your Free Guide" }),
   ).toHaveAttribute("href", "https://api.ppf-test.example/70k-guide.pdf");
-  expect(payload.contact).toBe("owner@studio.example");
+  expect(payload.email).toBe("owner@studio.example");
+  expect(payload.whatsapp).toBe("+919876543210");
+  expect(payload.captureMethod).toBe("email_and_whatsapp");
+  expect(payload.deliveryChannel).toBe("email");
   expect(payload.marketingConsent).toBe(false);
   expect(payload.sourceCampaign).toBe("70k-ppf-offer-secret");
   expect(payload.requestId).toMatch(/^[0-9a-f-]{36}$/);
@@ -160,6 +166,7 @@ test("Systeme failure and unconfirmed receipts keep the request retryable", asyn
   });
   await serve(page, configured);
   await page.getByLabel("Your email address").fill("retry@studio.example");
+  await page.getByLabel("Your WhatsApp number").fill("9876543210");
   await page.getByRole("button", { name: "Get My Free Guide" }).click();
   await expect(page.locator("#ppf-form-error")).toContainText(
     "could not be confirmed",
@@ -170,4 +177,49 @@ test("Systeme failure and unconfirmed receipts keep the request retryable", asyn
   );
   await expect(page.getByRole("status")).toHaveCount(0);
   expect(ids[0]).toBe(ids[1]);
+});
+
+test("Systeme cover uses its configured asset at a larger mobile size and survives host alignment styles", async ({
+  page,
+}) => {
+  const imageUrl = "https://assets.ppf-test.example/uploaded-guide-cover.png";
+  await page.route(imageUrl, (route) =>
+    route.fulfill({
+      contentType: "image/svg+xml",
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="1055" height="1491"><rect width="1055" height="1491" fill="#111315"/></svg>',
+    }),
+  );
+  await page.setViewportSize({ width: 390, height: 844 });
+  await serve(
+    page,
+    source.replace(/guideCoverUrl:\s*(["'])\1/, `guideCoverUrl: "${imageUrl}"`),
+  );
+  await page.addStyleTag({
+    content:
+      "body {text-align:center;} h1,h2,label,p {text-align:center;color:red;}",
+  });
+  const image = page.locator(".guide-cover-image");
+  await expect(image).toBeVisible();
+  await expect(image).toHaveAttribute("src", imageUrl);
+  const box = await image.boundingBox();
+  expect(box!.width).toBeGreaterThanOrEqual(240);
+  expect(box!.height / box!.width).toBeCloseTo(1491 / 1055, 1);
+  expect(
+    await page
+      .locator(".hero-copy h1")
+      .evaluate((el) => getComputedStyle(el).textAlign),
+  ).toBe("left");
+  expect(
+    await page
+      .locator(".input-label")
+      .first()
+      .evaluate((el) => getComputedStyle(el).textAlign),
+  ).toBe("left");
+  const form = await page.locator(".form-shell").boundingBox();
+  expect(form!.y).toBeLessThan(box!.y);
+  expect(
+    await page
+      .locator(".primary-button")
+      .evaluate((el) => getComputedStyle(el).backgroundColor),
+  ).toBe("rgb(199, 240, 0)");
 });

@@ -27,29 +27,34 @@ Production without integrations returns 503 when submitting; it does not pretend
 
 Copy `.env.example` to ignored `.env.local`, enter real configuration securely, and restart/rebuild as appropriate. Never commit secrets. Variables beginning with `NEXT_PUBLIC_` are public and fixed at build time; all integration credentials remain server-only.
 
-| Variable                         | Purpose                                                                                             |
-| -------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `APP_ORIGIN`                     | Exact public origin, e.g. `https://your-domain.example`, for same-origin browser submission checks. |
-| `LEAD_WEBHOOK_URL`               | HTTPS endpoint owned by your agency that durably stores leads and coordinates delivery.             |
-| `LEAD_WEBHOOK_TOKEN`             | Optional server-side bearer credential for that endpoint; use a production secret manager.          |
-| `NEXT_PUBLIC_PRIVACY_POLICY_URL` | Your real reviewed policy URL. Required for live API acceptance, and shown on the page.             |
-| `GUIDE_PDF_PATH`                 | Server-accessible absolute file path to the actual updated ₹70K+ guide.                             |
-| `GUIDE_VERSION`                  | Set to `70k` only after checking the document title/content. An old ₹50K+ PDF must never be used.   |
-| `NEXT_PUBLIC_GA4_ID`             | Optional actual GA4 measurement ID.                                                                 |
-| `NEXT_PUBLIC_META_PIXEL_ID`      | Optional actual Meta Pixel ID.                                                                      |
-| `LEAD_STORAGE_DIR`               | Local test storage location; `.data/leads` by default. Not a production database.                   |
-| `LEAD_CAPTURE_MODE`              | `development` allows local testing of a production build; omit in production.                       |
+| Variable                         | Purpose                                                                                                              |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `APP_ORIGIN`                     | Exact public origin, e.g. `https://your-domain.example`, for same-origin browser submission checks.                  |
+| `LEAD_WEBHOOK_URL`               | HTTPS endpoint owned by your agency that durably stores leads and coordinates delivery.                              |
+| `LEAD_WEBHOOK_TOKEN`             | Optional server-side bearer credential for that endpoint; use a production secret manager.                           |
+| `NEXT_PUBLIC_PRIVACY_POLICY_URL` | Your real reviewed policy URL. Required for live API acceptance, and shown on the page.                              |
+| `NEXT_PUBLIC_GUIDE_COVER_URL`    | Public HTTPS URL of the genuine uploaded cover for the Next.js page; the single-file page uses CONFIG.guideCoverUrl. |
+| `GUIDE_PDF_PATH`                 | Server-accessible absolute file path to the actual updated ₹70K+ guide.                                              |
+| `GUIDE_VERSION`                  | Set to `70k` only after checking the document title/content. An old ₹50K+ PDF must never be used.                    |
+| `NEXT_PUBLIC_GA4_ID`             | Optional actual GA4 measurement ID.                                                                                  |
+| `NEXT_PUBLIC_META_PIXEL_ID`      | Optional actual Meta Pixel ID.                                                                                       |
+| `LEAD_STORAGE_DIR`               | Local test storage location; `.data/leads` by default. Not a production database.                                    |
+| `LEAD_CAPTURE_MODE`              | `development` allows local testing of a production build; omit in production.                                        |
 
 The brand and Privacy Policy are explicit placeholders. Supply your agency identity and genuine policy before launch. No fictitious policy page is supplied. The in-form privacy summary describes guide fulfilment and separate, optional marketing permission; update it and `NOTICE_VERSION` together if data uses change. Establish retention/deletion procedures and actual processor disclosures in the real policy.
 
 ## Integration contract
 
-`POST /api/leads` validates email or Indian mobile numbers, checks browser Origin, rejects oversized JSON, and creates a server timestamp and campaign identifier. It sends JSON to your configured HTTPS webhook with `Authorization: Bearer <token>` (when set) and `Idempotency-Key: <requestId>`:
+`POST /api/leads` requires and validates both an email address and an Indian WhatsApp number, checks browser Origin, rejects oversized JSON, and creates a server timestamp and campaign identifier. It sends JSON to your configured HTTPS webhook with `Authorization: Bearer <token>` (when set) and `Idempotency-Key: <requestId>`:
 
 ```json
 {
   "method": "email",
   "contact": "owner@studio.com",
+  "email": "owner@studio.com",
+  "whatsapp": "+919876543210",
+  "captureMethod": "email_and_whatsapp",
+  "deliveryChannel": "email",
   "requestId": "11111111-1111-4111-8111-111111111111",
   "marketingConsent": false,
   "utm": { "utm_source": "instagram", "utm_campaign": "premium-ppf" },
@@ -58,9 +63,11 @@ The brand and Privacy Policy are explicit placeholders. Supply your agency ident
   "consent": {
     "guideRequested": true,
     "marketing": false,
-    "noticeVersion": "guide-request-v1",
+    "noticeVersion": "guide-request-email-and-whatsapp-v2",
     "recordedAt": "2026-10-11T00:00:00.000Z",
-    "channel": "email"
+    "channel": "email",
+    "whatsappGuideRequested": false,
+    "marketingChannels": []
   }
 }
 ```
@@ -69,7 +76,7 @@ Persist the payload in your real database/CRM with a UNIQUE constraint on reques
 
 Return JSON `{"stored":true,"delivery":"queued"}` only after durable capture and durable queueing. Supported delivery values: `sent` (confirmed by provider), `queued` (durable delivery job), `unavailable` (capture succeeded, but delivery not configured). Do not claim `sent` merely because a webhook fired. Failure, timeouts, or invalid receipts yield a retryable error; the client reuses the same ID for the same payload. Production persistence and delivery cannot be validated until your endpoint is configured.
 
-Deliver using the requested method only. For email, use your provider with a verified sender/domain. For WhatsApp, use an approved WhatsApp Business provider and applicable templates/consent rules; send only the requested resource, never unsolicited promotional messages. Optional promotions require the separate marketing opt-in. Store consent audit details and provide unsubscribe/withdrawal handling. Credentials belong in the integration server's secret manager, not browser code. Configure the matching ₹70K+ asset in that integration as well.
+The combined form delivers the requested guide by email. Collecting a WhatsApp number does not authorize WhatsApp messages. WhatsApp messages and promotional follow-up require the separate marketing opt-in; persist the explicit marketingChannels list and enforce it in delivery workers. For email, use your provider with a verified sender/domain. For WhatsApp, use an approved WhatsApp Business provider and applicable templates/consent rules; send only the requested resource, never unsolicited promotional messages. Optional promotions require the separate marketing opt-in. Store consent audit details and provide unsubscribe/withdrawal handling. Credentials belong in the integration server's secret manager, not browser code. Configure the matching ₹70K+ asset in that integration as well.
 
 Before public launch, place the route behind platform/WAF rate limiting and request-body limits (8 KB), configure bot protection appropriate to your traffic, and implement durable idempotency and retention in the integration. Origin validation is not authentication or abuse prevention. Development JSON files are unsuitable for multi-instance/serverless hosting.
 
@@ -91,7 +98,7 @@ System Chromium is available in this cloud environment. With the app running on 
 npx playwright test
 ```
 
-Tests cover target viewport widths, overflow, capture-channel switching, validation, marketing default, local storage receipts, duplicate API requests, missing PDF behavior, and the safe JavaScript-disabled state. The form stays disabled until hydration and uses POST as a fallback so contact details never enter URL query strings. Browser tests are intended for development mode and use synthetic test contacts. Tests create local test records; delete them when no longer needed.
+Tests cover target viewport widths, overflow, combined email/WhatsApp fields, validation, marketing default, local storage receipts, duplicate API requests, missing PDF behavior, and the safe JavaScript-disabled state. The form stays disabled until hydration and uses POST as a fallback so contact details never enter URL query strings. Browser tests are intended for development mode and use synthetic test contacts. Tests create local test records; delete them when no longer needed.
 
 ## Single-file Systeme.io version
 
@@ -99,18 +106,20 @@ Tests cover target viewport widths, overflow, capture-channel switching, validat
 
 1. Create a blank Systeme.io funnel page. Use a full-width section/row with zero padding and no extra navigation.
 2. Add one **Raw HTML / custom HTML** element and paste the entire contents of `systemeio.html`. Save and check the published page; the editor may not execute scripts.
-3. Edit the `CONFIG` object near the bottom. `agencyName` and `privacyPolicyUrl` are public. `leadEndpoint` is a **public HTTPS lead submission API**, not a secret CRM webhook or Systeme.io API URL. Never paste any API key/token here. Optional real GA4/Meta IDs load only after the measurement checkbox is checked. Review page-level Systeme.io tracking settings too: this block cannot prevent trackers configured elsewhere from loading.
+3. Edit the `CONFIG` object near the bottom. `agencyName`, `privacyPolicyUrl`, and `guideCoverUrl` are public. Set `guideCoverUrl` to the stable public HTTPS URL of the genuine uploaded cover in your Systeme.io image library; use the image URL, not a PDF URL. The cover displays uncropped at its original aspect ratio, up to 260px wide on mobile and 220px in the desktop benefit card. Until an accessible asset URL is supplied, the page explicitly says the cover image URL is pending; the image attached in chat was not available as a local file. `leadEndpoint` is a **public HTTPS lead submission API**, not a secret CRM webhook or Systeme.io API URL. Never paste any API key/token here. Optional real GA4/Meta IDs load only after the measurement checkbox is checked. Review page-level Systeme.io tracking settings too: this block cannot prevent trackers configured elsewhere from loading.
 4. Set the page SEO title to **The ₹70K+ PPF Offer Secret | Free Guide for PPF Studio Owners** and description to **Selling ₹70K+ PPF packages but attracting price shoppers? Download this free 5-minute offer guide for premium PPF and detailing studios.** Configure the matching Open Graph title/description in your page settings; the custom block cannot reliably replace host metadata.
 5. Publish the page after testing on your actual domain. No PDF, policy, tracking IDs, or integration credentials are invented.
 
 ### Capturing leads on Systeme.io
 
-A custom HTML form does **not** automatically become a native Systeme.io contact form. For native contacts and funnel automation without an external server, use a built-in Systeme.io opt-in form in the form area and configure its action/automation and the real guide asset in Systeme.io. Native email form behavior does not automatically provide this custom Email/WhatsApp switch; adapting native form fields and workflows needs your account configuration. Do not send WhatsApp messages without the requested-channel consent and a compliant provider.
+A custom HTML form does **not** automatically become a native Systeme.io contact form. For native contacts and funnel automation without an external server, use a built-in Systeme.io opt-in form in the form area and configure its action/automation and the real guide asset in Systeme.io. Native email form behavior does not automatically provide this combined email/WhatsApp fields; adapting native form fields and workflows needs your account configuration. Do not send WhatsApp messages without the requested-channel consent and a compliant provider.
 
-To retain the exact custom form, set `leadEndpoint` to an API you control. The endpoint must accept the same payload documented above; validate it independently; create authoritative server timestamps/campaign/consent records; apply rate limiting; persist idempotently using requestId; and integrate with your CRM/Systeme.io and chosen delivery provider **server-side**. Keep all credentials in that server's environment/secret manager. The one-file page cannot provide server-side storage or validation on its own.
+To retain the exact custom form, set `leadEndpoint` to an API you control. The endpoint must accept the same payload documented above; validate it independently; create authoritative server timestamps/campaign/consent records; apply rate limiting; persist idempotently using requestId; and integrate with your CRM/Systeme.io and email delivery provider **server-side**. Keep all credentials in that server's environment/secret manager. The one-file page cannot provide server-side storage or validation on its own.
 
 The API must support browser CORS for your **exact** published Systeme.io page origin, including OPTIONS preflight, POST, and the Content-Type header. Do not use a wildcard as a replacement for origin validation. The existing Next.js route is same-origin only; it needs explicitly configured CORS support before use from a Systeme.io page. Never put `LEAD_WEBHOOK_URL` or `LEAD_WEBHOOK_TOKEN` from the server configuration into this file. A public lead API is intentionally callable without a browser secret and must enforce abuse protection server-side.
 
 Return `{"stored":true,"delivery":"queued","downloadUrl":"https://your-domain.example/the-70k-ppf-offer-secret.pdf"}` only after durable capture and durable delivery queueing. The page also understands the existing API's `status: captured/development` receipt. `delivery` must be `sent`, `queued`, or `unavailable`; only claim sent after provider confirmation. Omit downloadUrl until the genuine updated ₹70K+ guide exists. The browser accepts HTTPS downloads only. A missing endpoint/policy, failed request, or unconfirmed receipt displays an error without claiming success. Retries of the same form data reuse the request ID.
+
+Both versions now use charcoal `#111315`, porcelain `#F1F0EC`, metallic grey `#B8BEC4`, muted `#737B82`, and signal lime `#C7F000`. Lime uses dark text on the CTA. On mobile the combined form appears before the larger cover card, with 16px inputs to prevent iOS focus zoom, 56–58px primary controls, and no horizontal overflow. Supporting text uses dark text on porcelain and metallic grey on charcoal to preserve contrast.
 
 The source deliberately contains no secret values, database, or real PDF. A publicly reachable integration, actual policy, brand, and matching guide are still required before accepting real leads.

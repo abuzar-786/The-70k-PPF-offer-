@@ -6,6 +6,7 @@ import {
   Clock3,
   ShieldCheck,
 } from "lucide-react";
+import GuideCover from "@/components/guide-cover";
 import LeadForm from "@/components/lead-form";
 import AnalyticsConsent from "@/components/analytics-consent";
 export const dynamic = "force-dynamic";
@@ -54,44 +55,31 @@ export default function Home() {
                 PPF packages for serious luxury-car buyers — instead of making
                 price the first conversation.
               </p>
-              <div className="guide-card">
-                <div className="guide-cover" aria-hidden="true">
-                  <div className="cover-top">
-                    PPF GROWTH
-                    <br />
-                    RESOURCES
-                  </div>
-                  <div className="cover-title">
-                    The <span>₹70K+</span> PPF Offer Secret
-                  </div>
-                  <div className="cover-rule" />
-                  <div className="cover-bottom">
-                    FREE GUIDE <ArrowUpRight size={16} />
-                  </div>
-                </div>
-                <div className="guide-details">
-                  <span className="card-kicker">
-                    <BookOpen size={14} /> THE GUIDE
-                  </span>
-                  <h2>The ₹70K+ PPF Offer Secret</h2>
-                  <p className="guide-subtitle">
-                    Free 5-minute guide for premium studios
-                  </p>
-                  <ul>
-                    {benefits.map((benefit) => (
-                      <li key={benefit}>
-                        <span className="check-icon">
-                          <Check size={12} strokeWidth={3} />
-                        </span>
-                        {benefit}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            </div>
+            <div className="guide-card">
+              <GuideCover src={process.env.NEXT_PUBLIC_GUIDE_COVER_URL || ""} />
+              <div className="guide-details">
+                <span className="card-kicker">
+                  <BookOpen size={14} /> THE FREE GUIDE
+                </span>
+                <h2>The ₹70K+ PPF Offer Secret</h2>
+                <p className="guide-subtitle">
+                  Free 5-minute guide for premium studios
+                </p>
+                <ul>
+                  {benefits.map((benefit) => (
+                    <li key={benefit}>
+                      <span className="check-icon">
+                        <Check size={14} strokeWidth={3} />
+                      </span>
+                      {benefit}
+                    </li>
+                  ))}
+                </ul>
+                <p className="reading-note">
+                  <Clock3 size={14} /> A focused read. A clearer offer.
+                </p>
               </div>
-              <p className="reading-note">
-                <Clock3 size={14} /> A focused read. A clearer offer.
-              </p>
             </div>
             <div className="form-shell">
               <div className="form-topline">
@@ -100,16 +88,16 @@ export default function Home() {
               </div>
               <h2>Get Your Free Copy</h2>
               <p className="form-description">
-                Enter your email or WhatsApp number to receive the guide.
+                Enter your email and WhatsApp number to receive the guide.
               </p>
               <LeadForm development={development} />
               <div className="form-divider" />
               <div className="privacy-note">
                 <ShieldCheck size={18} />
                 <p>
-                  We use your contact details to fulfil your guide request
-                  through your chosen channel. Promotional follow-up is optional
-                  and only sent if you opt in.
+                  We use your email to deliver the guide and store your WhatsApp
+                  number with your request. WhatsApp messages and promotional
+                  follow-up are only sent if you opt in above.
                 </p>
               </div>
               {privacy ? (
