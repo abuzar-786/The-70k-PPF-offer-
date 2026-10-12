@@ -44,8 +44,8 @@ export function enableAnalytics() {
     w.dataLayer = w.dataLayer || [];
     // gtag requires its arguments object, rather than a raw array.
     // Google's command queue uses the arguments object.
-    // eslint-disable-next-line prefer-rest-params
     w.gtag = function () {
+      // eslint-disable-next-line prefer-rest-params
       w.dataLayer!.push(arguments);
     };
     w.gtag("js", new Date());

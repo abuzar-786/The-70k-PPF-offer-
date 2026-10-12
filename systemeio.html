@@ -1,0 +1,1703 @@
+<!-- SYSTEME.IO: paste this entire file into ONE Raw HTML block.
+Use a blank full-width section with no padding. Set page title/description in page settings.
+Edit PUBLIC SETTINGS near the bottom. Never add API keys here.
+The custom form needs a public HTTPS server endpoint; it is not a native Systeme.io form.
+If you want native Systeme.io contacts/automation without a server endpoint, use its built-in form instead. -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  #ppf-landing {
+    --navy: #101b31;
+    --orange: #f7b35c;
+    --muted: #64748b;
+    --light: #f4f5f7;
+    --white: #fff;
+  }
+  #ppf-landing * {
+    box-sizing: border-box;
+  }
+  #ppf-landing {
+    scroll-behavior: smooth;
+  }
+  #ppf-landing {
+    margin: 0;
+    color: var(--navy);
+    background: #fff;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  #ppf-landing button,
+  #ppf-landing input {
+    font: inherit;
+  }
+  #ppf-landing button,
+  #ppf-landing a,
+  #ppf-landing input,
+  #ppf-landing label {
+    -webkit-tap-highlight-color: transparent;
+  }
+  #ppf-landing a {
+    color: inherit;
+  }
+  #ppf-landing button {
+    cursor: pointer;
+  }
+  #ppf-landing button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+  }
+  #ppf-landing :focus-visible {
+    outline: 3px solid #d28b33;
+    outline-offset: 4px;
+  }
+  #ppf-landing input:focus-visible {
+    outline-offset: 2px;
+  }
+  #ppf-landing .container {
+    width: min(1160px, calc(100% - 64px));
+    margin-inline: auto;
+  }
+  #ppf-landing .header {
+    background: var(--navy);
+    color: #fff;
+    border-bottom: 1px solid #ffffff14;
+  }
+  #ppf-landing .header-inner {
+    height: 84px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  #ppf-landing .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 650;
+    letter-spacing: -0.3px;
+  }
+  #ppf-landing .brand-symbol {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #ffffff30;
+    display: grid;
+    place-items: center;
+    border-radius: 7px;
+    color: var(--orange);
+  }
+  #ppf-landing .header-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.9px;
+    color: #c3cad5;
+  }
+  #ppf-landing .hero {
+    background: var(--navy);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  #ppf-landing .hero:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 0% 55%, #27456c25, transparent 65%);
+  }
+  #ppf-landing .hero-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.26fr) minmax(0, 1fr);
+    gap: 64px;
+    padding-top: 60px;
+    padding-bottom: 54px;
+    align-items: start;
+  }
+  #ppf-landing .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 9px;
+    line-height: 1.6;
+    letter-spacing: 1.45px;
+    font-weight: 700;
+    color: var(--orange);
+    margin: 0 0 22px;
+  }
+  #ppf-landing .eyebrow > span {
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+  }
+  #ppf-landing h1 {
+    font-size: clamp(34px, 3.5vw, 48px);
+    font-weight: 650;
+    line-height: 1.14;
+    letter-spacing: -1.8px;
+    margin: 0;
+    max-width: 570px;
+  }
+  #ppf-landing h1 span {
+    color: var(--orange);
+  }
+  #ppf-landing .hero-description {
+    font-size: 15px;
+    line-height: 1.85;
+    color: #b8c2d2;
+    max-width: 490px;
+    margin: 23px 0 28px;
+  }
+  #ppf-landing .guide-card {
+    background: #fff;
+    color: var(--navy);
+    border: 1px solid #e6e9ef;
+    border-radius: 12px;
+    padding: 22px;
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 22px;
+    box-shadow: 0 16px 40px #0000000d;
+  }
+  #ppf-landing .guide-cover {
+    position: relative;
+    min-height: 184px;
+    background: var(--navy);
+    color: #fff;
+    padding: 13px 12px 14px;
+    border-radius: 2px 7px 7px 2px;
+    box-shadow:
+      4px 5px 0 #dce0e7,
+      8px 12px 18px #101b311c;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-left: 4px solid #24314a;
+    overflow: hidden;
+  }
+  #ppf-landing .guide-cover:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, #ffffff0a, transparent 25%);
+    pointer-events: none;
+  }
+  #ppf-landing .cover-top {
+    font-size: 5px;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    color: #bac4d4;
+  }
+  #ppf-landing .cover-title {
+    font-size: 17px;
+    line-height: 1.12;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+    max-width: 80px;
+    margin: 12px 0 10px;
+  }
+  #ppf-landing .cover-title span {
+    color: var(--orange);
+  }
+  #ppf-landing .cover-rule {
+    height: 2px;
+    background: var(--orange);
+    width: 26px;
+    margin-bottom: 16px;
+  }
+  #ppf-landing .cover-bottom {
+    font-size: 5px;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #c9d1de;
+  }
+  #ppf-landing .card-kicker {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #8d98a9;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  #ppf-landing .guide-details h2 {
+    font-size: 17px;
+    line-height: 1.3;
+    letter-spacing: -0.45px;
+    margin: 9px 0 5px;
+  }
+  #ppf-landing .guide-subtitle {
+    font-size: 10px;
+    color: var(--muted);
+    margin: 0 0 16px;
+    line-height: 1.5;
+  }
+  #ppf-landing .guide-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 10px;
+  }
+  #ppf-landing .guide-details li {
+    font-size: 11px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: #475569;
+  }
+  #ppf-landing .check-icon {
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    border-radius: 50%;
+    background: #faf1e6;
+    color: #a66c25;
+    margin-top: 1px;
+  }
+  #ppf-landing .reading-note {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 10px;
+    color: #9ba8bd;
+    margin: 18px 0 0;
+  }
+  #ppf-landing .form-shell {
+    background: #fff;
+    color: var(--navy);
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px #0000001f;
+    min-width: 0;
+    margin-top: 4px;
+  }
+  #ppf-landing .form-topline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  #ppf-landing .small-pill {
+    font-size: 8px;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: #a06622;
+    background: #fff3e2;
+    padding: 6px 9px;
+    border-radius: 5px;
+  }
+  #ppf-landing .form-step {
+    font-size: 7px;
+    letter-spacing: 1.1px;
+    color: #97a1b1;
+  }
+  #ppf-landing .form-shell h2 {
+    font-size: 27px;
+    line-height: 1.2;
+    letter-spacing: -0.9px;
+    font-weight: 650;
+    margin: 0 0 10px;
+  }
+  #ppf-landing .form-description {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--muted);
+    margin: 0 0 23px;
+    max-width: 300px;
+  }
+  #ppf-landing .channel-fieldset {
+    border: 0;
+    margin: 0 0 23px;
+    padding: 0;
+    min-width: 0;
+  }
+  #ppf-landing .channel-fieldset legend {
+    font-size: 10px;
+    font-weight: 600;
+    margin-bottom: 9px;
+  }
+  #ppf-landing .segmented-control {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 4px;
+    background: var(--light);
+    border: 1px solid #e9edf2;
+    border-radius: 9px;
+    gap: 4px;
+  }
+  #ppf-landing .segmented-control label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #7a879a;
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+      background 0.15s,
+      box-shadow 0.15s;
+  }
+  #ppf-landing .segmented-control label.selected {
+    background: white;
+    color: var(--navy);
+    box-shadow: 0 1px 5px #101b3110;
+  }
+  #ppf-landing .segmented-control input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  #ppf-landing .segmented-control label:focus-within {
+    outline: 2px solid #d28b33;
+    outline-offset: 2px;
+  }
+  #ppf-landing .segmented-control label svg:last-child {
+    color: #b97c30;
+  }
+  #ppf-landing .input-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 9px;
+  }
+  #ppf-landing .input-wrap {
+    position: relative;
+  }
+  #ppf-landing .input-wrap > svg {
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    color: #97a1b1;
+    pointer-events: none;
+  }
+  #ppf-landing .input-wrap input {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #dce1e9;
+    border-radius: 8px;
+    padding: 0 13px 0 42px;
+    background: #fff;
+    color: var(--navy);
+    font-size: 12px;
+    transition: border-color 0.15s;
+  }
+  #ppf-landing .input-wrap input::placeholder {
+    color: #96a1b2;
+  }
+  #ppf-landing .input-wrap input:focus {
+    border-color: #c88938;
+  }
+  #ppf-landing .input-wrap input[aria-invalid="true"] {
+    border-color: #b42318;
+  }
+  #ppf-landing .marketing-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: 10px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin: 17px 0 21px;
+    cursor: pointer;
+  }
+  #ppf-landing .marketing-consent input {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    margin: 2px 0 0;
+    accent-color: var(--navy);
+  }
+  #ppf-landing .optional {
+    color: #8792a3;
+  }
+  #ppf-landing .primary-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 52px;
+    background: var(--orange);
+    border: 1px solid var(--orange);
+    border-radius: 8px;
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 13px;
+    box-shadow: 0 3px 5px #f7b35c15;
+    transition:
+      background 0.15s,
+      transform 0.15s;
+    text-decoration: none;
+  }
+  #ppf-landing .primary-button:hover:not(:disabled) {
+    background: #ffc57d;
+    transform: translateY(-1px);
+  }
+  #ppf-landing .microcopy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #8b96a7;
+    font-size: 9px;
+    margin: 12px 0 0;
+  }
+  #ppf-landing .development-note {
+    font-size: 9px;
+    line-height: 1.6;
+    color: #82642e;
+    padding: 8px 10px;
+    background: #fff8eb;
+    border: 1px solid #f4e7cd;
+    border-radius: 6px;
+    margin: 16px 0 0;
+  }
+  #ppf-landing .form-divider {
+    height: 1px;
+    background: #edf0f4;
+    margin: 23px 0 18px;
+  }
+  #ppf-landing .privacy-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #96a1b1;
+  }
+  #ppf-landing .privacy-note svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  #ppf-landing .privacy-note p {
+    font-size: 9px;
+    line-height: 1.75;
+    color: #8995a7;
+    margin: 0;
+  }
+  #ppf-landing .privacy-link,
+  #ppf-landing .privacy-placeholder {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    font-size: 9px;
+    color: #8591a3;
+    margin: 9px 0 0 28px;
+  }
+  #ppf-landing .privacy-placeholder {
+    color: #a0a8b5;
+  }
+  #ppf-landing .form-error {
+    font-size: 11px;
+    line-height: 1.6;
+    color: #b42318;
+    padding: 10px;
+    background: #fff1f0;
+    border-radius: 6px;
+  }
+  #ppf-landing .success-panel {
+    padding: 12px 0 4px;
+  }
+  #ppf-landing .success-icon {
+    width: 45px;
+    height: 45px;
+    display: grid;
+    place-items: center;
+    background: #eef5ef;
+    color: #376445;
+    border-radius: 50%;
+    margin-bottom: 16px;
+  }
+  #ppf-landing .success-panel h3 {
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    margin: 0 0 10px;
+  }
+  #ppf-landing .success-panel p {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+  #ppf-landing .success-panel .asset-note {
+    font-size: 10px;
+    background: var(--light);
+    padding: 12px;
+    border-radius: 6px;
+  }
+  #ppf-landing .download-button {
+    margin: 18px 0;
+  }
+  #ppf-landing .reassurance {
+    background: var(--light);
+    padding: 35px 0 34px;
+    text-align: center;
+    border-bottom: 1px solid #eaedf1;
+  }
+  #ppf-landing .reassurance-line {
+    display: block;
+    background: var(--orange);
+    width: 24px;
+    height: 2px;
+    margin: 0 auto 15px;
+  }
+  #ppf-landing .reassurance h2 {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    line-height: 1.5;
+    margin: 0 0 8px;
+  }
+  #ppf-landing .reassurance p {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 0;
+  }
+  #ppf-landing .footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    padding-top: 26px;
+    padding-bottom: 24px;
+  }
+  #ppf-landing .footer-brand {
+    font-size: 11px;
+    color: #94a0b1;
+  }
+  #ppf-landing .footer-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    font-size: 9px;
+    color: #95a0b0;
+  }
+  #ppf-landing .footer-links a {
+    text-decoration: none;
+  }
+  #ppf-landing .footer-links a:hover {
+    text-decoration: underline;
+  }
+  #ppf-landing .analytics-choice {
+    flex-basis: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    font-size: 9px;
+    color: #94a0b1;
+  }
+  #ppf-landing .analytics-choice label {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    min-height: 24px;
+    cursor: pointer;
+  }
+  #ppf-landing .analytics-choice input {
+    accent-color: var(--navy);
+    width: 13px;
+    height: 13px;
+    margin: 0;
+  }
+  #ppf-landing .spinner {
+    animation: ppf-spin 0.8s linear infinite;
+  }
+  @keyframes ppf-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @media (min-width: 1440px) {
+    #ppf-landing .hero-grid {
+      padding-top: 76px;
+      padding-bottom: 68px;
+      gap: 80px;
+    }
+    #ppf-landing h1 {
+      font-size: 51px;
+    }
+    #ppf-landing .hero-description {
+      font-size: 16px;
+    }
+    #ppf-landing .form-shell {
+      padding: 36px;
+    }
+    #ppf-landing .guide-card {
+      margin-top: 32px;
+    }
+  }
+  @media (max-width: 1024px) {
+    #ppf-landing .hero-grid {
+      gap: 32px;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    }
+    #ppf-landing h1 {
+      font-size: 38px;
+    }
+    #ppf-landing .form-shell {
+      padding: 26px;
+    }
+    #ppf-landing .guide-card {
+      padding: 18px;
+      gap: 16px;
+      grid-template-columns: 88px minmax(0, 1fr);
+    }
+    #ppf-landing .guide-cover {
+      min-height: 180px;
+      padding: 12px 9px;
+    }
+    #ppf-landing .cover-title {
+      font-size: 16px;
+    }
+    #ppf-landing .guide-details h2 {
+      font-size: 15px;
+    }
+    #ppf-landing .eyebrow {
+      font-size: 8px;
+      letter-spacing: 1px;
+    }
+  }
+  @media (max-width: 767px) {
+    #ppf-landing .container {
+      width: calc(100% - 40px);
+    }
+    #ppf-landing .header-inner {
+      height: 70px;
+    }
+    #ppf-landing .brand {
+      font-size: 12px;
+    }
+    #ppf-landing .header-label {
+      font-size: 8px;
+    }
+    #ppf-landing .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+      padding: 36px 0 36px;
+    }
+    #ppf-landing .hero-copy {
+      max-width: 560px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    #ppf-landing .eyebrow {
+      font-size: 7.5px;
+      letter-spacing: 0.8px;
+      margin-bottom: 18px;
+    }
+    #ppf-landing h1 {
+      font-size: clamp(34px, 7vw, 48px);
+      letter-spacing: -1.3px;
+      max-width: 540px;
+    }
+    #ppf-landing .hero-description {
+      font-size: 13px;
+      line-height: 1.8;
+      margin: 20px 0 24px;
+    }
+    #ppf-landing .guide-card {
+      grid-template-columns: 94px minmax(0, 1fr);
+      padding: 18px;
+      gap: 18px;
+    }
+    #ppf-landing .guide-details h2 {
+      font-size: 16px;
+    }
+    #ppf-landing .guide-details li {
+      font-size: 10px;
+    }
+    #ppf-landing .guide-subtitle {
+      font-size: 9px;
+    }
+    #ppf-landing .guide-cover {
+      min-height: 175px;
+    }
+    #ppf-landing .reading-note {
+      font-size: 9px;
+      margin-top: 15px;
+    }
+    #ppf-landing .form-shell {
+      padding: 26px;
+      max-width: 560px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    #ppf-landing .form-shell h2 {
+      font-size: 27px;
+    }
+    #ppf-landing .form-description {
+      font-size: 13px;
+    }
+    #ppf-landing .input-label {
+      font-size: 12px;
+    }
+    #ppf-landing .input-wrap input {
+      font-size: 16px;
+    }
+    #ppf-landing .segmented-control label {
+      font-size: 12px;
+      min-height: 44px;
+    }
+    #ppf-landing .marketing-consent {
+      font-size: 11px;
+    }
+    #ppf-landing .primary-button {
+      font-size: 14px;
+      min-height: 54px;
+    }
+    #ppf-landing .privacy-note p {
+      font-size: 10px;
+    }
+    #ppf-landing .microcopy {
+      font-size: 10px;
+    }
+    #ppf-landing .reassurance {
+      padding: 28px 0;
+    }
+    #ppf-landing .reassurance h2 {
+      font-size: 16px;
+      max-width: 450px;
+      margin: 0 auto 10px;
+    }
+    #ppf-landing .reassurance p {
+      font-size: 10px;
+    }
+    #ppf-landing .footer {
+      gap: 16px;
+      justify-content: center;
+      padding-top: 24px;
+    }
+    #ppf-landing .footer-links {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+    #ppf-landing .analytics-choice {
+      justify-content: center;
+      flex-direction: column;
+      gap: 0;
+      text-align: center;
+    }
+    #ppf-landing .analytics-choice label {
+      min-height: 44px;
+    }
+    #ppf-landing .marketing-consent input {
+      width: 18px;
+      height: 18px;
+    }
+    #ppf-landing .development-note {
+      font-size: 10px;
+    }
+  }
+  @media (max-width: 389px) {
+    #ppf-landing .container {
+      width: calc(100% - 32px);
+    }
+    #ppf-landing h1 {
+      font-size: 34px;
+    }
+    #ppf-landing .form-shell {
+      padding: 22px;
+    }
+    #ppf-landing .guide-card {
+      padding: 15px;
+      gap: 14px;
+      grid-template-columns: 80px minmax(0, 1fr);
+    }
+    #ppf-landing .cover-title {
+      font-size: 15px;
+    }
+    #ppf-landing .guide-details h2 {
+      font-size: 14px;
+    }
+    #ppf-landing .guide-details li {
+      font-size: 9.5px;
+    }
+    #ppf-landing .form-step {
+      font-size: 6px;
+    }
+    #ppf-landing .guide-details ul {
+      gap: 9px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #ppf-landing {
+      scroll-behavior: auto;
+    }
+    #ppf-landing *,
+    #ppf-landing *:before,
+    #ppf-landing *:after {
+      animation: none !important;
+      transition: none !important;
+    }
+    #ppf-landing .primary-button:hover:not(:disabled) {
+      transform: none;
+    }
+  }
+
+  /* Keep supporting copy readable without weakening the main hierarchy. */
+  @media (min-width: 768px) {
+    #ppf-landing .eyebrow {
+      font-size: 10px;
+    }
+    #ppf-landing .hero-description {
+      font-size: 16px;
+    }
+    #ppf-landing .guide-details li {
+      font-size: 12px;
+    }
+    #ppf-landing .guide-subtitle {
+      font-size: 11px;
+    }
+    #ppf-landing .card-kicker {
+      font-size: 9px;
+    }
+    #ppf-landing .form-description {
+      font-size: 14px;
+    }
+    #ppf-landing .channel-fieldset legend,
+    #ppf-landing .input-label {
+      font-size: 12px;
+    }
+    #ppf-landing .segmented-control label {
+      font-size: 12px;
+    }
+    #ppf-landing .input-wrap input {
+      font-size: 14px;
+    }
+    #ppf-landing .marketing-consent {
+      font-size: 11px;
+    }
+    #ppf-landing .microcopy {
+      font-size: 10px;
+    }
+    #ppf-landing .privacy-note p {
+      font-size: 10px;
+    }
+    #ppf-landing .privacy-link,
+    #ppf-landing .privacy-placeholder {
+      font-size: 10px;
+    }
+    #ppf-landing .reassurance p {
+      font-size: 12px;
+    }
+    #ppf-landing .footer-links,
+    #ppf-landing .analytics-choice {
+      font-size: 10px;
+    }
+  }
+  @media (max-width: 767px) {
+    #ppf-landing .guide-details li {
+      font-size: 11px;
+    }
+    #ppf-landing .guide-subtitle {
+      font-size: 10px;
+    }
+    #ppf-landing .guide-cover {
+      min-height: 190px;
+    }
+    #ppf-landing .eyebrow {
+      font-size: 8px;
+    }
+    #ppf-landing .guide-details h2 {
+      line-height: 1.4;
+    }
+  }
+  /* Supporting text meets normal-text contrast on white and light grey. */
+  #ppf-landing .card-kicker,
+  #ppf-landing .guide-subtitle,
+  #ppf-landing .form-step,
+  #ppf-landing .segmented-control label,
+  #ppf-landing .input-wrap input::placeholder,
+  #ppf-landing .marketing-consent,
+  #ppf-landing .optional,
+  #ppf-landing .microcopy,
+  #ppf-landing .privacy-note p,
+  #ppf-landing .privacy-link,
+  #ppf-landing .privacy-placeholder,
+  #ppf-landing .footer-brand,
+  #ppf-landing .footer-links,
+  #ppf-landing .analytics-choice {
+    color: #64748b;
+  }
+  #ppf-landing .guide-details h2 {
+    font-weight: 600;
+  }
+  #ppf-landing .segmented-control label.selected {
+    color: var(--navy);
+  }
+
+  #ppf-landing {
+    width: 100%;
+    line-height: 1.5;
+    box-sizing: border-box;
+    isolation: isolate;
+  }
+  #ppf-landing [hidden] {
+    display: none !important;
+  }
+  #ppf-landing svg {
+    display: block;
+    flex-shrink: 0;
+  }
+  #ppf-landing h1,
+  #ppf-landing h2,
+  #ppf-landing h3 {
+    font-family: inherit;
+  }
+</style>
+<div id="ppf-landing">
+  <header class="header">
+    <div class="container header-inner">
+      <a
+        class="brand"
+        aria-label="PPF Growth Resources home"
+        href="#ppf-landing"
+        ><span class="brand-symbol" aria-hidden="true"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-arrow-up-right"
+          >
+            <path d="M7 7h10v10"></path>
+            <path d="M7 17 17 7"></path></svg></span
+        >PPF Growth Resources</a
+      ><span class="header-label">FREE GUIDE</span>
+    </div>
+  </header>
+  <main id="ppf-main">
+    <section class="hero" aria-labelledby="ppf-hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span></span>FOR PREMIUM PPF &amp; DETAILING STUDIO OWNERS
+          </p>
+          <h1 id="ppf-hero-title">
+            Selling ₹70K+ PPF Packages But Still Attracting
+            <span>Price Shoppers?</span>
+          </h1>
+          <p class="hero-description">
+            Discover a simple 3-part offer formula to position your existing PPF
+            packages for serious luxury-car buyers — instead of making price the
+            first conversation.
+          </p>
+          <div class="guide-card">
+            <div class="guide-cover" aria-hidden="true">
+              <div class="cover-top">PPF GROWTH<br />RESOURCES</div>
+              <div class="cover-title">
+                The <span>₹70K+</span> PPF Offer Secret
+              </div>
+              <div class="cover-rule"></div>
+              <div class="cover-bottom">
+                FREE GUIDE
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-arrow-up-right"
+                >
+                  <path d="M7 7h10v10"></path>
+                  <path d="M7 17 17 7"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="guide-details">
+              <span class="card-kicker"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-book-open"
+                >
+                  <path d="M12 7v14"></path>
+                  <path
+                    d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"
+                  ></path>
+                </svg>
+                THE GUIDE</span
+              >
+              <h2>The ₹70K+ PPF Offer Secret</h2>
+              <p class="guide-subtitle">
+                Free 5-minute guide for premium studios
+              </p>
+              <ul>
+                <li>
+                  <span class="check-icon"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-check"
+                    >
+                      <path d="M20 6 9 17l-5-5"></path></svg></span
+                  >Why generic PPF offers invite price comparisons.
+                </li>
+                <li>
+                  <span class="check-icon"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-check"
+                    >
+                      <path d="M20 6 9 17l-5-5"></path></svg></span
+                  >The CAR + PROBLEM + PREMIUM OUTCOME formula.
+                </li>
+                <li>
+                  <span class="check-icon"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-check"
+                    >
+                      <path d="M20 6 9 17l-5-5"></path></svg></span
+                  >A 5-minute exercise to rewrite your existing offer.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <p class="reading-note">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-clock3"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16.5 12"></polyline>
+            </svg>
+            A focused read. A clearer offer.
+          </p>
+        </div>
+        <div class="form-shell">
+          <div class="form-topline">
+            <span class="small-pill">FREE RESOURCE</span
+            ><span class="form-step">01 / OFFER CLARITY</span>
+          </div>
+          <h2>Get Your Free Copy</h2>
+          <p class="form-description">
+            Enter your email or WhatsApp number to receive the guide.
+          </p>
+          <form
+            aria-label="Request your free PPF guide"
+            action="#"
+            method="post"
+          >
+            <noscript
+              ><p class="development-note">
+                Enable JavaScript to request your guide. Your contact details
+                will not be submitted without it.
+              </p></noscript
+            >
+            <fieldset disabled="" class="channel-fieldset">
+              <legend>Receive your guide via</legend>
+              <div class="segmented-control">
+                <label class="selected"
+                  ><input
+                    type="radio"
+                    name="method"
+                    checked=""
+                    value="email" /><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-mail"
+                  >
+                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                    <path
+                      d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+                    ></path></svg
+                  ><span>Email</span
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-check"
+                  >
+                    <path d="M20 6 9 17l-5-5"></path></svg></label
+                ><label class=""
+                  ><input type="radio" name="method" value="whatsapp" /><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-message-circle"
+                  >
+                    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg
+                  ><span>WhatsApp</span></label
+                >
+              </div>
+            </fieldset>
+            <label class="input-label" for="ppf-contact"
+              >Your email address</label
+            >
+            <div class="input-wrap">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-mail"
+              >
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg
+              ><input
+                id="ppf-contact"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                placeholder="you@yourstudio.com"
+                required=""
+                maxlength="254"
+                disabled=""
+                aria-invalid="false"
+                name="contact"
+                value=""
+              />
+            </div>
+            <label class="marketing-consent"
+              ><input type="checkbox" disabled="" /><span
+                >Yes, I’d also like occasional studio growth tips and offers via
+                my chosen channel.
+                <span class="optional">(Optional)</span></span
+              ></label
+            >
+            <p id="ppf-form-error" class="form-error" role="alert" hidden></p>
+            <button class="primary-button" type="submit" disabled="">
+              Get My Free Guide
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-arrow-right"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </button>
+            <p class="microcopy">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-lock-keyhole"
+              >
+                <circle cx="12" cy="16" r="1"></circle>
+                <rect x="3" y="10" width="18" height="12" rx="2"></rect>
+                <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+              </svg>
+              Free download. No payment required.
+            </p>
+            <p id="ppf-setup-note" class="development-note">
+              Setup preview · lead capture and guide delivery are not connected.
+            </p>
+          </form>
+          <div class="form-divider"></div>
+          <div class="privacy-note">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-shield-check"
+            >
+              <path
+                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+              ></path>
+              <path d="m9 12 2 2 4-4"></path>
+            </svg>
+            <p>
+              We use your contact details to fulfil your guide request through
+              your chosen channel. Promotional follow-up is optional and only
+              sent if you opt in.
+            </p>
+          </div>
+          <span data-privacy class="privacy-placeholder"
+            >Privacy Policy — content pending</span
+          >
+        </div>
+      </div>
+    </section>
+    <section class="reassurance">
+      <div class="container">
+        <span class="reassurance-line"></span>
+        <h2>Your PPF package is premium. Your offer should communicate why.</h2>
+        <p>Built for established PPF and detailing studios.</p>
+      </div>
+    </section>
+  </main>
+  <footer class="footer container">
+    <div class="footer-brand">[Your agency name]</div>
+    <div class="footer-links">
+      <span data-privacy>Privacy Policy (coming soon)</span
+      ><span id="ppf-copyright">© 2026 PPF Growth Resources</span>
+    </div>
+    <div class="analytics-choice">
+      <label
+        ><input type="checkbox" />Allow optional analytics &amp; advertising
+        measurement</label
+      ><span>Off by default. You can change this anytime.</span>
+    </div>
+  </footer>
+</div>
+<script>
+  (() => {
+    "use strict";
+    // PUBLIC SETTINGS ONLY. Never paste Systeme.io API keys, CRM tokens, or provider secrets here.
+    const CONFIG = {
+      leadEndpoint: "", // HTTPS public lead API with server validation + CORS for your Systeme.io page.
+      privacyPolicyUrl: "", // Your genuine HTTPS privacy policy URL.
+      agencyName: "", // Your real agency name.
+      ga4Id: "", // Optional real G-... ID; loaded only after measurement consent.
+      metaPixelId: "", // Optional real numeric ID; loaded only after measurement consent.
+    };
+    const root = document.getElementById("ppf-landing");
+    if (!root || root.dataset.initialized === "true") return;
+    root.dataset.initialized = "true";
+    const form = root.querySelector("form");
+    const contact = root.querySelector("#ppf-contact");
+    const contactLabel = root.querySelector('label[for="ppf-contact"]');
+    const marketing = root.querySelector(".marketing-consent input");
+    const submit = root.querySelector('button[type="submit"]');
+    const error = root.querySelector("#ppf-form-error");
+    const note = root.querySelector("#ppf-setup-note");
+    const analyticsConsent = root.querySelector(".analytics-choice input");
+    const buttonContent = submit.innerHTML;
+    const contacts = { email: "", whatsapp: "" };
+    let method = "email",
+      busy = false,
+      started = false,
+      attempt = null,
+      measurement = false;
+    const campaign = "70k-ppf-offer-secret";
+    const secureUrl = (value) => {
+      try {
+        const url = new URL(value);
+        return url.protocol === "https:" && !url.username && !url.password
+          ? url.href
+          : null;
+      } catch {
+        return null;
+      }
+    };
+    const endpoint = secureUrl(CONFIG.leadEndpoint);
+    const policy = secureUrl(CONFIG.privacyPolicyUrl);
+    if (CONFIG.agencyName.trim())
+      root.querySelector(".footer-brand").textContent = CONFIG.agencyName;
+    root.querySelector("#ppf-copyright").textContent =
+      `© ${new Date().getFullYear()} ${CONFIG.agencyName.trim() || "PPF Growth Resources"}`;
+    if (policy) {
+      root.querySelectorAll("[data-privacy]").forEach((placeholder) => {
+        const link = document.createElement("a");
+        link.href = policy;
+        link.textContent = "Privacy Policy";
+        link.className = placeholder.className;
+        placeholder.replaceWith(link);
+      });
+    }
+    if (endpoint && policy) note.hidden = true;
+    // These custom hooks contain no raw contact details or UTM values.
+    function track(event, properties = {}) {
+      const safe = Object.fromEntries(
+        Object.entries(properties).filter(([key]) =>
+          ["method", "mode", "delivery"].includes(key),
+        ),
+      );
+      root.dispatchEvent(
+        new CustomEvent("ppf:analytics", {
+          bubbles: true,
+          detail: { event, ...safe },
+        }),
+      );
+      if (measurement) {
+        window.gtag?.("event", event, safe);
+        window.fbq?.("trackCustom", event, safe);
+      }
+    }
+    track("landing_page_view");
+    analyticsConsent.addEventListener("change", () => {
+      if (!analyticsConsent.checked) {
+        measurement = false;
+        window.gtag?.("consent", "update", {
+          analytics_storage: "denied",
+          ad_storage: "denied",
+          ad_user_data: "denied",
+          ad_personalization: "denied",
+        });
+        window.fbq?.("consent", "revoke");
+        return;
+      }
+      measurement = true;
+      if (/^G-[A-Z0-9]+$/.test(CONFIG.ga4Id)) {
+        if (!window.gtag) {
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function () {
+            window.dataLayer.push(arguments);
+          };
+          const script = document.createElement("script");
+          script.async = true;
+          script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(CONFIG.ga4Id)}`;
+          document.head.appendChild(script);
+          window.gtag("js", new Date());
+          window.gtag("config", CONFIG.ga4Id, { send_page_view: false });
+        }
+        window.gtag("consent", "update", {
+          analytics_storage: "granted",
+          ad_storage: "denied",
+          ad_user_data: "denied",
+          ad_personalization: "denied",
+        });
+        window.gtag("event", "landing_page_view");
+      }
+      if (/^\d+$/.test(CONFIG.metaPixelId)) {
+        if (!window.fbq) {
+          const fbq = function () {
+            fbq.callMethod
+              ? fbq.callMethod.apply(fbq, arguments)
+              : fbq.queue.push(arguments);
+          };
+          fbq.queue = [];
+          fbq.loaded = true;
+          fbq.version = "2.0";
+          window.fbq = fbq;
+          window._fbq = fbq;
+          const script = document.createElement("script");
+          script.async = true;
+          script.src = "https://connect.facebook.net/en_US/fbevents.js";
+          document.head.appendChild(script);
+          fbq("init", CONFIG.metaPixelId);
+        }
+        window.fbq("consent", "grant");
+        window.fbq("trackCustom", "landing_page_view");
+      }
+    });
+    function showError(message) {
+      error.textContent = message;
+      error.hidden = false;
+      contact.setAttribute("aria-invalid", "true");
+      contact.setAttribute("aria-describedby", "ppf-form-error");
+    }
+    function clearError() {
+      error.hidden = true;
+      error.textContent = "";
+      contact.removeAttribute("aria-invalid");
+      contact.removeAttribute("aria-describedby");
+    }
+    function disabled(value) {
+      form.querySelectorAll("input, button, fieldset").forEach((control) => {
+        control.disabled = value;
+      });
+    }
+    root.querySelectorAll('input[name="method"]').forEach((radio) => {
+      radio.addEventListener("change", () => {
+        contacts[method] = contact.value;
+        method = radio.value;
+        contact.type = method === "email" ? "email" : "tel";
+        contact.inputMode = method === "email" ? "email" : "tel";
+        contact.autocomplete = method === "email" ? "email" : "tel";
+        contact.maxLength = method === "email" ? 254 : 24;
+        contact.placeholder =
+          method === "email" ? "you@yourstudio.com" : "+91 98765 43210";
+        contactLabel.textContent =
+          method === "email" ? "Your email address" : "Your WhatsApp number";
+        contact.value = contacts[method];
+        root.querySelectorAll(".segmented-control label").forEach((label) => {
+          const selected = label.querySelector("input").value === method;
+          label.classList.toggle("selected", selected);
+          const check = label.querySelector(".lucide-check");
+          if (check) check.style.display = selected ? "" : "none";
+        });
+        const icon = root
+          .querySelector(`input[name="method"][value="${method}"]`)
+          .parentElement.querySelector("svg")
+          .cloneNode(true);
+        root.querySelector(".input-wrap > svg").replaceWith(icon);
+        clearError();
+      });
+    });
+    contact.addEventListener("focus", () => {
+      if (!started) {
+        started = true;
+        track("lead_form_started", { method });
+      }
+    });
+    contact.addEventListener("input", clearError);
+    function normalize(value) {
+      value = value.trim();
+      if (method === "email")
+        return value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+          ? value.toLowerCase()
+          : null;
+      if (!/^[+\d\s()-]+$/.test(value)) return null;
+      let digits = value.replace(/\D/g, "");
+      if (digits.startsWith("0091") && digits.length === 14)
+        digits = digits.slice(4);
+      else if (digits.startsWith("91") && digits.length === 12)
+        digits = digits.slice(2);
+      else if (digits.startsWith("0") && digits.length === 11)
+        digits = digits.slice(1);
+      return /^[6-9]\d{9}$/.test(digits) ? "+91" + digits : null;
+    }
+    function uuid() {
+      if (crypto.randomUUID) return crypto.randomUUID();
+      const bytes = crypto.getRandomValues(new Uint8Array(16));
+      bytes[6] = (bytes[6] & 15) | 64;
+      bytes[8] = (bytes[8] & 63) | 128;
+      const hex = Array.from(bytes, (b) =>
+        b.toString(16).padStart(2, "0"),
+      ).join("");
+      return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+    }
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (busy) return;
+      clearError();
+      const normalized = normalize(contact.value);
+      if (!normalized) {
+        showError(
+          method === "email"
+            ? "Enter a valid email address."
+            : "Enter a valid 10-digit Indian mobile number, optionally with +91.",
+        );
+        contact.focus();
+        return;
+      }
+      if (!endpoint || !policy) {
+        showError(
+          "Guide requests are not connected yet. No contact details have been saved and no guide has been sent.",
+        );
+        return;
+      }
+      const params = new URLSearchParams(window.location.search);
+      const utm = Object.fromEntries(
+        [
+          "utm_source",
+          "utm_medium",
+          "utm_campaign",
+          "utm_term",
+          "utm_content",
+        ].map((key) => [
+          key,
+          (params.get(key) || "").replace(/[\u0000-\u001f]/g, "").slice(0, 200),
+        ]),
+      );
+      const key = JSON.stringify({
+        method,
+        contact: normalized,
+        marketingConsent: marketing.checked,
+        utm,
+      });
+      if (!attempt || attempt.key !== key) attempt = { key, id: uuid() };
+      const submittedAt = new Date().toISOString();
+      const payload = {
+        method,
+        contact: normalized,
+        marketingConsent: marketing.checked,
+        requestId: attempt.id,
+        utm,
+        sourceCampaign: campaign,
+        submittedAt,
+        consent: {
+          guideRequested: true,
+          marketing: marketing.checked,
+          noticeVersion: "guide-request-v1",
+          recordedAt: submittedAt,
+          channel: method,
+        },
+      };
+      busy = true;
+      disabled(true);
+      submit.textContent = "Saving your request…";
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 15000);
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+          credentials: "omit",
+          redirect: "error",
+        });
+        if (!response.ok)
+          throw new Error(
+            "Your request could not be confirmed. Please try again.",
+          );
+        const receipt = await response.json();
+        const development = receipt.status === "development";
+        if (
+          (!["captured", "development"].includes(receipt.status) &&
+            receipt.stored !== true) ||
+          !["sent", "queued", "unavailable"].includes(receipt.delivery)
+        )
+          throw new Error(
+            "The lead system returned an unconfirmed receipt. Please try again.",
+          );
+        const panel = document.createElement("div");
+        panel.className = "success-panel";
+        panel.setAttribute("role", "status");
+        panel.setAttribute("aria-live", "polite");
+        const title = document.createElement("h3");
+        title.textContent = development
+          ? "Test request saved"
+          : "Thank you for your request";
+        panel.appendChild(title);
+        const message = document.createElement("p");
+        message.textContent = development
+          ? "Development mode: your test request was saved by the test endpoint. No email or WhatsApp message was sent."
+          : receipt.delivery === "sent"
+            ? `Your guide has been sent by ${method === "email" ? "email" : "WhatsApp"}.`
+            : receipt.delivery === "queued"
+              ? `Your request is saved. Guide delivery by ${method === "email" ? "email" : "WhatsApp"} is queued.`
+              : "Your request is saved, but guide delivery is not available yet.";
+        panel.appendChild(message);
+        // The trusted server must return a URL only for the genuine updated ₹70K+ PDF.
+        let download = null;
+        if (typeof receipt.downloadUrl === "string") {
+          try {
+            download = secureUrl(new URL(receipt.downloadUrl, endpoint).href);
+          } catch {
+            /* Keep download unavailable. */
+          }
+        }
+        if (download) {
+          const link = document.createElement("a");
+          link.className = "primary-button download-button";
+          link.href = download;
+          link.textContent = "Download Your Free Guide";
+          link.rel = "noopener";
+          link.addEventListener("click", () =>
+            track("guide_download_clicked", { method }),
+          );
+          panel.appendChild(link);
+        } else {
+          const missing = document.createElement("p");
+          missing.className = "asset-note";
+          missing.textContent =
+            "The updated ₹70K+ guide PDF is not available yet. No download is available.";
+          panel.appendChild(missing);
+        }
+        form.replaceWith(panel);
+        track("lead_form_submitted", {
+          method,
+          mode: development ? "development" : "captured",
+          delivery: receipt.delivery,
+        });
+      } catch (failure) {
+        showError(
+          failure.name === "AbortError"
+            ? "The request timed out. Please retry."
+            : failure.message ||
+                "We could not confirm your request. Please try again.",
+        );
+      } finally {
+        clearTimeout(timer);
+        busy = false;
+        disabled(false);
+        submit.innerHTML = buttonContent;
+      }
+    });
+    disabled(false);
+  })();
+</script>

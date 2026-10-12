@@ -92,3 +92,25 @@ npx playwright test
 ```
 
 Tests cover target viewport widths, overflow, capture-channel switching, validation, marketing default, local storage receipts, duplicate API requests, missing PDF behavior, and the safe JavaScript-disabled state. The form stays disabled until hydration and uses POST as a fallback so contact details never enter URL query strings. Browser tests are intended for development mode and use synthetic test contacts. Tests create local test records; delete them when no longer needed.
+
+## Single-file Systeme.io version
+
+`systemeio.html` is the complete framework-free version: markup, scoped CSS, inline SVG icons, and JavaScript in one file. No npm/build step is needed to embed it.
+
+1. Create a blank Systeme.io funnel page. Use a full-width section/row with zero padding and no extra navigation.
+2. Add one **Raw HTML / custom HTML** element and paste the entire contents of `systemeio.html`. Save and check the published page; the editor may not execute scripts.
+3. Edit the `CONFIG` object near the bottom. `agencyName` and `privacyPolicyUrl` are public. `leadEndpoint` is a **public HTTPS lead submission API**, not a secret CRM webhook or Systeme.io API URL. Never paste any API key/token here. Optional real GA4/Meta IDs load only after the measurement checkbox is checked. Review page-level Systeme.io tracking settings too: this block cannot prevent trackers configured elsewhere from loading.
+4. Set the page SEO title to **The ₹70K+ PPF Offer Secret | Free Guide for PPF Studio Owners** and description to **Selling ₹70K+ PPF packages but attracting price shoppers? Download this free 5-minute offer guide for premium PPF and detailing studios.** Configure the matching Open Graph title/description in your page settings; the custom block cannot reliably replace host metadata.
+5. Publish the page after testing on your actual domain. No PDF, policy, tracking IDs, or integration credentials are invented.
+
+### Capturing leads on Systeme.io
+
+A custom HTML form does **not** automatically become a native Systeme.io contact form. For native contacts and funnel automation without an external server, use a built-in Systeme.io opt-in form in the form area and configure its action/automation and the real guide asset in Systeme.io. Native email form behavior does not automatically provide this custom Email/WhatsApp switch; adapting native form fields and workflows needs your account configuration. Do not send WhatsApp messages without the requested-channel consent and a compliant provider.
+
+To retain the exact custom form, set `leadEndpoint` to an API you control. The endpoint must accept the same payload documented above; validate it independently; create authoritative server timestamps/campaign/consent records; apply rate limiting; persist idempotently using requestId; and integrate with your CRM/Systeme.io and chosen delivery provider **server-side**. Keep all credentials in that server's environment/secret manager. The one-file page cannot provide server-side storage or validation on its own.
+
+The API must support browser CORS for your **exact** published Systeme.io page origin, including OPTIONS preflight, POST, and the Content-Type header. Do not use a wildcard as a replacement for origin validation. The existing Next.js route is same-origin only; it needs explicitly configured CORS support before use from a Systeme.io page. Never put `LEAD_WEBHOOK_URL` or `LEAD_WEBHOOK_TOKEN` from the server configuration into this file. A public lead API is intentionally callable without a browser secret and must enforce abuse protection server-side.
+
+Return `{"stored":true,"delivery":"queued","downloadUrl":"https://your-domain.example/the-70k-ppf-offer-secret.pdf"}` only after durable capture and durable delivery queueing. The page also understands the existing API's `status: captured/development` receipt. `delivery` must be `sent`, `queued`, or `unavailable`; only claim sent after provider confirmation. Omit downloadUrl until the genuine updated ₹70K+ guide exists. The browser accepts HTTPS downloads only. A missing endpoint/policy, failed request, or unconfirmed receipt displays an error without claiming success. Retries of the same form data reuse the request ID.
+
+The source deliberately contains no secret values, database, or real PDF. A publicly reachable integration, actual policy, brand, and matching guide are still required before accepting real leads.
