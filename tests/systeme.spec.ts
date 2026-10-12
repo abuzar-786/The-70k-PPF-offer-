@@ -17,6 +17,18 @@ async function serve(page: import("@playwright/test").Page, html = source) {
   );
   await page.goto("/standalone-test");
 }
+// The cloud egress proxy blocks the supplied CDN. Use a representative image for layout tests; real CDN fetching remains a separate check.
+const suppliedCoverUrl =
+  "https://d1yei2z3i6k35z.cloudfront.net/1498607/6acce6c85f5cf7.16078938_PPFofferchecklistcoverph.png";
+test.beforeEach(async ({ page }) => {
+  await page.route(suppliedCoverUrl, (route) =>
+    route.fulfill({
+      contentType: "image/svg+xml",
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="1055" height="1491"><rect width="1055" height="1491" fill="#111315"/></svg>',
+    }),
+  );
+});
+
 for (const width of [360, 390, 768, 1024, 1440]) {
   test(`Systeme single-file layout ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
@@ -192,7 +204,10 @@ test("Systeme cover uses its configured asset at a larger mobile size and surviv
   await page.setViewportSize({ width: 390, height: 844 });
   await serve(
     page,
-    source.replace(/guideCoverUrl:\s*(["'])\1/, `guideCoverUrl: "${imageUrl}"`),
+    source.replace(
+      /guideCoverUrl:\s*(["'])[^"']*\1/,
+      `guideCoverUrl: "${imageUrl}"`,
+    ),
   );
   await page.addStyleTag({
     content:
@@ -216,10 +231,72 @@ test("Systeme cover uses its configured asset at a larger mobile size and surviv
       .evaluate((el) => getComputedStyle(el).textAlign),
   ).toBe("left");
   const form = await page.locator(".form-shell").boundingBox();
-  expect(form!.y).toBeLessThan(box!.y);
+  expect(form!.y).toBeGreaterThan(box!.y + box!.height);
   expect(
     await page
       .locator(".primary-button")
       .evaluate((el) => getComputedStyle(el).backgroundColor),
   ).toBe("rgb(199, 240, 0)");
+});
+
+for (const blockWidth of [320, 360, 390, 768]) {
+  test(`Systeme narrow ${blockWidth}px block in a desktop editor stacks offer, cover, form`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    const nested = `<div style="width:${blockWidth}px;margin:0 auto;text-align:center">${source}</div>`;
+    await serve(page, nested);
+    const heading = await page.locator(".hero-copy").boundingBox();
+    const guide = await page.locator(".guide-card").boundingBox();
+    const form = await page.locator(".form-shell").boundingBox();
+    expect(guide!.y).toBeGreaterThanOrEqual(heading!.y + heading!.height);
+    expect(form!.y).toBeGreaterThanOrEqual(guide!.y + guide!.height);
+    expect(form!.width).toBeGreaterThan(Math.min(blockWidth - 40, 600));
+    for (const selector of [
+      ".hero-copy h1",
+      ".guide-card",
+      ".form-shell",
+      ".input-wrap input",
+      ".primary-button",
+    ]) {
+      const boxes = await page.locator(selector).evaluateAll((elements) =>
+        elements.map((el) => {
+          const rect = el.getBoundingClientRect();
+          return { left: rect.left, right: rect.right };
+        }),
+      );
+      const root = await page.locator("#ppf-landing").boundingBox();
+      for (const box of boxes) {
+        expect(box.left).toBeGreaterThanOrEqual(root!.x - 1);
+        expect(box.right).toBeLessThanOrEqual(root!.x + root!.width + 1);
+      }
+    }
+    await expect(page.getByLabel("Your email address")).toBeVisible();
+    await expect(page.getByLabel("Your WhatsApp number")).toBeVisible();
+    await page.screenshot({
+      path: `test-results/systeme-embedded-${blockWidth}.png`,
+      fullPage: true,
+    });
+  });
+}
+
+test("Systeme uses the supplied cover directly, including without JavaScript", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await serve(page);
+  await expect(page.locator(".guide-cover-image")).toHaveAttribute(
+    "src",
+    suppliedCoverUrl,
+  );
+  await expect(page.locator(".guide-cover-image")).toHaveAttribute(
+    "width",
+    "1055",
+  );
+  await expect(page.locator(".guide-cover-image")).not.toHaveAttribute(
+    "hidden",
+    "",
+  );
+  await context.close();
 });

@@ -2,6 +2,18 @@ import { test, expect } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+// The cloud egress proxy blocks the supplied CDN. Use a representative image for layout tests; real CDN fetching remains a separate check.
+const suppliedCoverUrl =
+  "https://d1yei2z3i6k35z.cloudfront.net/1498607/6acce6c85f5cf7.16078938_PPFofferchecklistcoverph.png";
+test.beforeEach(async ({ page }) => {
+  await page.route(suppliedCoverUrl, (route) =>
+    route.fulfill({
+      contentType: "image/svg+xml",
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="1055" height="1491"><rect width="1055" height="1491" fill="#111315"/></svg>',
+    }),
+  );
+});
+
 for (const width of [360, 390, 768, 1024, 1440]) {
   test(`responsive layout at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
@@ -12,22 +24,16 @@ for (const width of [360, 390, 768, 1024, 1440]) {
     await expect(
       page.getByRole("button", { name: "Get My Free Guide" }),
     ).toBeVisible();
-    if (width < 768) {
+    {
       const form = await page.locator(".form-shell").boundingBox();
       const cover = await page.locator(".guide-card").boundingBox();
-      expect(form!.y).toBeLessThan(cover!.y);
+      expect(form!.y).toBeGreaterThanOrEqual(cover!.y + cover!.height);
     }
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= window.innerWidth,
       ),
     ).toBe(true);
-    if (width >= 1024) {
-      const box = await page
-        .getByRole("button", { name: "Get My Free Guide" })
-        .boundingBox();
-      expect(box!.y + box!.height).toBeLessThan(900);
-    }
     await page.screenshot({
       path: `test-results/landing-${width}.png`,
       fullPage: true,

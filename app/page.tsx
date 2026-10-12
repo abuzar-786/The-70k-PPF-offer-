@@ -6,6 +6,7 @@ import {
   Clock3,
   ShieldCheck,
 } from "lucide-react";
+import { GUIDE_COVER_URL } from "@/lib/brand";
 import GuideCover from "@/components/guide-cover";
 import LeadForm from "@/components/lead-form";
 import AnalyticsConsent from "@/components/analytics-consent";
@@ -22,7 +23,7 @@ export default function Home() {
     (process.env.NODE_ENV !== "production" ||
       process.env.LEAD_CAPTURE_MODE === "development");
   return (
-    <>
+    <div className="landing-root">
       <header className="header">
         <div className="container header-inner">
           <Link
@@ -57,7 +58,9 @@ export default function Home() {
               </p>
             </div>
             <div className="guide-card">
-              <GuideCover src={process.env.NEXT_PUBLIC_GUIDE_COVER_URL || ""} />
+              <GuideCover
+                src={process.env.NEXT_PUBLIC_GUIDE_COVER_URL || GUIDE_COVER_URL}
+              />
               <div className="guide-details">
                 <span className="card-kicker">
                   <BookOpen size={14} /> THE FREE GUIDE
@@ -134,6 +137,6 @@ export default function Home() {
         </div>
         <AnalyticsConsent />
       </footer>
-    </>
+    </div>
   );
 }
