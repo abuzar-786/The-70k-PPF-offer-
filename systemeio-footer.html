@@ -1,0 +1,115 @@
+<!-- SYSTEME.IO BLOCK 2 (OPTIONAL): Paste BELOW your native Systeme.io opt-in form. -->
+<style>
+  #ppf-footer {
+    --ink: #111315;
+    --porcelain: #f1f0ec;
+    --silver: #b8bec4;
+    background: var(--porcelain);
+    color: var(--ink);
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    line-height: 1.6;
+    text-align: center;
+    width: 100%;
+  }
+  #ppf-footer * {
+    box-sizing: border-box;
+  }
+  #ppf-footer .container {
+    width: min(1160px, calc(100% - 32px));
+    margin-inline: auto;
+  }
+  #ppf-footer .reassurance {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--silver);
+  }
+  #ppf-footer .reassurance-line {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--ink);
+    margin: 0 auto 15px;
+  }
+  #ppf-footer h2 {
+    font-family: inherit;
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.6;
+    font-weight: 650;
+    max-width: 680px;
+    margin: 0 auto 9px;
+  }
+  #ppf-footer p {
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 0;
+    color: var(--ink);
+  }
+  #ppf-footer .footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 0;
+  }
+  #ppf-footer .footer-brand {
+    font-size: 12px;
+  }
+  #ppf-footer .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    font-size: 11px;
+  }
+  #ppf-footer a {
+    color: inherit;
+    text-underline-offset: 3px;
+  }
+  #ppf-footer a:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 4px;
+  }
+</style>
+<div id="ppf-footer">
+  <section class="reassurance">
+    <div class="container">
+      <span class="reassurance-line"></span>
+      <h2>Your PPF package is premium. Your offer should communicate why.</h2>
+      <p>Built for established PPF and detailing studios.</p>
+    </div>
+  </section>
+  <footer class="footer container">
+    <div class="footer-brand">[Your agency name]</div>
+    <div class="footer-links">
+      <span data-privacy>Privacy Policy (coming soon)</span
+      ><span id="ppf-copyright">© 2026 PPF Growth Resources</span>
+    </div>
+  </footer>
+</div>
+<script>
+  (() => {
+    const CONFIG = { agencyName: "", privacyPolicyUrl: "" };
+    const root = document.getElementById("ppf-footer");
+    if (!root) return;
+    if (CONFIG.agencyName.trim())
+      root.querySelector(".footer-brand").textContent = CONFIG.agencyName;
+    root.querySelector("#ppf-copyright").textContent =
+      "© " +
+      new Date().getFullYear() +
+      " " +
+      (CONFIG.agencyName.trim() || "PPF Growth Resources");
+    try {
+      const url = new URL(CONFIG.privacyPolicyUrl);
+      if (url.protocol === "https:" && !url.username && !url.password)
+        root.querySelectorAll("[data-privacy]").forEach((placeholder) => {
+          const a = document.createElement("a");
+          a.href = url.href;
+          a.textContent = "Privacy Policy";
+          placeholder.replaceWith(a);
+        });
+    } catch {
+      /* Keep the explicit policy placeholder until a real URL is supplied. */
+    }
+  })();
+</script>

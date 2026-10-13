@@ -1,8 +1,7 @@
-<!-- SYSTEME.IO: paste this entire file into ONE Raw HTML block.
-Use a blank full-width section with no padding. Set page title/description in page settings.
-Edit PUBLIC SETTINGS near the bottom. Never add API keys here.
-The custom form needs a public HTTPS server endpoint; it is not a native Systeme.io form.
-If you want native Systeme.io contacts/automation without a server endpoint, use its built-in form instead. -->
+<!-- SYSTEME.IO BLOCK 1: Paste this entire file into one full-width Raw HTML element.
+Add the native Systeme.io email/WhatsApp fields and submit button immediately BELOW this block.
+Optional: paste systemeio-footer.html into a second Raw HTML block BELOW the native form.
+This block has no custom opt-in form, submission handler, API calls, or automatic delivery. -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
@@ -57,7 +56,6 @@ If you want native Systeme.io contacts/automation without a server endpoint, use
     outline: 3px solid var(--lime);
     outline-offset: 4px;
   }
-  #ppf-landing .form-shell :focus-visible,
   #ppf-landing .footer :focus-visible {
     outline-color: var(--ink);
   }
@@ -111,7 +109,7 @@ If you want native Systeme.io contacts/automation without a server endpoint, use
   #ppf-landing .hero-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "copy" "guide" "form";
+    grid-template-areas: "copy" "guide";
     gap: 28px;
     padding: 30px 0 40px;
     align-items: start;
@@ -289,257 +287,6 @@ If you want native Systeme.io contacts/automation without a server endpoint, use
     margin: 20px 0 0;
     color: var(--ink);
   }
-  #ppf-landing .form-shell {
-    grid-area: form;
-    background: var(--porcelain);
-    color: var(--ink);
-    padding: 26px 22px;
-    border: 1px solid var(--silver);
-    border-radius: 16px;
-    box-shadow: 0 18px 40px #0000001c;
-    min-width: 0;
-    text-align: left;
-    width: 100%;
-    max-width: 620px;
-    margin: 0 auto;
-  }
-  #ppf-landing .form-topline {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 19px;
-  }
-  #ppf-landing .small-pill {
-    font-size: 9px;
-    letter-spacing: 1px;
-    font-weight: 700;
-    color: var(--ink);
-    background: var(--lime);
-    padding: 6px 9px;
-    border-radius: 5px;
-  }
-  #ppf-landing .form-step {
-    font-size: 7px;
-    letter-spacing: 1px;
-    color: var(--ink);
-  }
-  #ppf-landing .form-shell h2 {
-    font-size: 27px;
-    line-height: 1.2;
-    letter-spacing: -0.85px;
-    font-weight: 650;
-    margin: 0 0 10px;
-    color: var(--ink);
-    text-align: left;
-    overflow-wrap: break-word;
-  }
-  #ppf-landing .form-description {
-    font-size: 13px;
-    line-height: 1.8;
-    color: var(--ink);
-    margin: 0 0 25px;
-    text-align: left;
-    margin-bottom: 22px;
-  }
-  #ppf-landing .form-fields {
-    display: grid;
-    gap: 16px;
-  }
-  #ppf-landing .input-label {
-    display: block;
-    font-size: 12px;
-    font-weight: 650;
-    margin: 0 0 9px;
-    text-align: left;
-    color: var(--ink);
-  }
-  #ppf-landing .input-wrap {
-    position: relative;
-  }
-  #ppf-landing .input-wrap > svg {
-    position: absolute;
-    left: 15px;
-    top: 18px;
-    color: var(--muted);
-    pointer-events: none;
-  }
-  #ppf-landing .input-wrap input {
-    display: block;
-    width: 100%;
-    height: 56px;
-    border: 1px solid var(--silver);
-    border-radius: 9px;
-    padding: 0 13px 0 44px;
-    background: var(--porcelain);
-    color: var(--ink);
-    font-size: 16px;
-    line-height: 1.4;
-    transition:
-      border-color 0.15s,
-      box-shadow 0.15s;
-    box-shadow: none;
-    min-width: 0;
-  }
-  #ppf-landing .input-wrap input::placeholder {
-    color: #51585e;
-  }
-  #ppf-landing .input-wrap input:focus {
-    border-color: var(--ink);
-    box-shadow: 0 0 0 1px var(--ink);
-  }
-  #ppf-landing .input-wrap input[aria-invalid="true"] {
-    border-color: #a22a21;
-  }
-  #ppf-landing .marketing-consent {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 11px;
-    line-height: 1.75;
-    color: var(--ink);
-    margin: 20px 0 23px;
-    cursor: pointer;
-    text-align: left;
-    min-height: 44px;
-  }
-  #ppf-landing .marketing-consent input {
-    width: 18px;
-    height: 18px;
-    flex: 0 0 18px;
-    margin: 3px 0 0;
-    accent-color: var(--ink);
-  }
-  #ppf-landing .optional {
-    white-space: nowrap;
-  }
-  #ppf-landing .primary-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    width: 100%;
-    min-height: 58px;
-    padding: 12px 16px;
-    background: var(--lime);
-    border: 1px solid var(--lime);
-    border-radius: 9px;
-    color: var(--ink);
-    font-weight: 750;
-    font-size: 15px;
-    line-height: 1.5;
-    text-decoration: none;
-    transition:
-      filter 0.15s,
-      transform 0.15s;
-    white-space: normal;
-  }
-  #ppf-landing .primary-button:hover:not(:disabled) {
-    filter: brightness(0.94);
-    transform: translateY(-1px);
-  }
-  #ppf-landing .microcopy {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    color: var(--ink);
-    font-size: 11px;
-    line-height: 1.6;
-    margin: 13px 0 0;
-    text-align: center;
-  }
-  #ppf-landing .development-note {
-    font-size: 11px;
-    line-height: 1.7;
-    color: var(--ink);
-    padding: 10px 12px;
-    background: #b8bec422;
-    border: 1px solid var(--silver);
-    border-radius: 7px;
-    margin: 17px 0 0;
-    text-align: left;
-  }
-  #ppf-landing .form-divider {
-    height: 1px;
-    background: var(--silver);
-    margin: 24px 0 19px;
-  }
-  #ppf-landing .privacy-note {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    color: var(--muted);
-    text-align: left;
-  }
-  #ppf-landing .privacy-note svg {
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-  #ppf-landing .privacy-note p {
-    font-size: 11px;
-    line-height: 1.8;
-    color: var(--ink);
-    margin: 0;
-  }
-  #ppf-landing .privacy-link,
-  #ppf-landing .privacy-placeholder {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    font-size: 11px;
-    line-height: 1.6;
-    color: var(--ink);
-    margin: 10px 0 0 28px;
-  }
-  #ppf-landing .privacy-link {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-  #ppf-landing .form-error {
-    font-size: 12px;
-    line-height: 1.65;
-    color: #84281f;
-    padding: 12px;
-    border: 1px solid #a22a2166;
-    background: #f3e8e5;
-    border-radius: 7px;
-    margin: 0 0 14px;
-  }
-  #ppf-landing .success-panel {
-    padding: 12px 0 4px;
-    text-align: left;
-  }
-  #ppf-landing .success-icon {
-    width: 45px;
-    height: 45px;
-    display: grid;
-    place-items: center;
-    background: var(--lime);
-    color: var(--ink);
-    border-radius: 50%;
-    margin-bottom: 16px;
-  }
-  #ppf-landing .success-panel h3 {
-    font-size: 23px;
-    letter-spacing: -0.5px;
-    margin: 0 0 10px;
-  }
-  #ppf-landing .success-panel p {
-    font-size: 13px;
-    line-height: 1.8;
-    color: var(--ink);
-  }
-  #ppf-landing .success-panel .asset-note {
-    font-size: 12px;
-    background: #b8bec422;
-    padding: 12px;
-    border: 1px solid var(--silver);
-    border-radius: 7px;
-  }
-  #ppf-landing .download-button {
-    margin: 18px 0;
-  }
   #ppf-landing .reassurance {
     background: var(--porcelain);
     color: var(--ink);
@@ -620,14 +367,6 @@ If you want native Systeme.io contacts/automation without a server endpoint, use
     flex: 0 0 16px;
     margin: 0;
   }
-  #ppf-landing .spinner {
-    animation: ppf-spin 0.8s linear infinite;
-  }
-  @keyframes ppf-spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
   @media (prefers-reduced-motion: reduce) {
     #ppf-landing {
       scroll-behavior: auto;
@@ -638,9 +377,6 @@ If you want native Systeme.io contacts/automation without a server endpoint, use
       animation: none !important;
       transition: none !important;
     }
-    #ppf-landing .primary-button:hover:not(:disabled) {
-      transform: none;
-    }
   }
   @container ppf (min-width: 600px) {
     #ppf-landing .guide-card {
@@ -649,9 +385,6 @@ If you want native Systeme.io contacts/automation without a server endpoint, use
     }
     #ppf-landing .cover-frame {
       width: 240px;
-    }
-    #ppf-landing .form-shell {
-      padding: 32px;
     }
     #ppf-landing .hero-grid {
       padding-top: 42px;
@@ -668,7 +401,7 @@ If you want native Systeme.io contacts/automation without a server endpoint, use
     #ppf-landing .hero-grid {
       width: min(1160px, calc(100% - 64px));
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      grid-template-areas: "copy guide" "form form";
+      grid-template-areas: "copy guide";
       gap: 40px 48px;
       padding: 56px 0;
     }
@@ -701,36 +434,19 @@ If you want native Systeme.io contacts/automation without a server endpoint, use
     #ppf-landing .guide-card {
       padding: 18px;
     }
-    #ppf-landing .form-shell {
-      padding: 23px 19px;
-    }
-    #ppf-landing .form-step {
-      font-size: 6.5px;
-    }
   }
 
-  #ppf-landing * {
-    box-sizing: border-box;
-  }
   #ppf-landing {
-    text-align: left;
     container-type: inline-size;
     container-name: ppf;
     min-width: 0;
-  }
-  #ppf-landing figure {
-    margin: 0;
-  }
-  #ppf-landing .hero-copy,
-  #ppf-landing .form-shell,
-  #ppf-landing .guide-card {
-    text-align: left;
-  }
-  #ppf-landing {
     width: 100%;
     line-height: 1.5;
-    box-sizing: border-box;
+    text-align: left;
     isolation: isolate;
+  }
+  #ppf-landing * {
+    box-sizing: border-box;
   }
   #ppf-landing [hidden] {
     display: none !important;
@@ -738,11 +454,6 @@ If you want native Systeme.io contacts/automation without a server endpoint, use
   #ppf-landing svg {
     display: block;
     flex-shrink: 0;
-  }
-  #ppf-landing h1,
-  #ppf-landing h2,
-  #ppf-landing h3 {
-    font-family: inherit;
   }
 </style>
 <div id="ppf-landing">
@@ -904,561 +615,50 @@ If you want native Systeme.io contacts/automation without a server endpoint, use
             </p>
           </div>
         </div>
-        <div class="form-shell">
-          <div class="form-topline">
-            <span class="small-pill">FREE RESOURCE</span
-            ><span class="form-step">01 / OFFER CLARITY</span>
-          </div>
-          <h2>Get Your Free Copy</h2>
-          <p class="form-description">
-            Enter your email and WhatsApp number to receive the guide.
-          </p>
-          <form
-            aria-label="Request your free PPF guide"
-            action="#"
-            method="post"
-          >
-            <noscript
-              ><p class="development-note">
-                Enable JavaScript to request your guide. Your contact details
-                will not be submitted without it.
-              </p></noscript
-            >
-            <div class="form-fields">
-              <div class="field">
-                <label class="input-label" for="ppf-email"
-                  >Your email address</label
-                >
-                <div class="input-wrap">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-mail"
-                  >
-                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                    <path
-                      d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
-                    ></path></svg
-                  ><input
-                    id="ppf-email"
-                    type="email"
-                    inputmode="email"
-                    autocomplete="email"
-                    placeholder="you@yourstudio.com"
-                    required=""
-                    maxlength="254"
-                    disabled=""
-                    aria-invalid="false"
-                    name="email"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div class="field">
-                <label class="input-label" for="ppf-whatsapp"
-                  >Your WhatsApp number</label
-                >
-                <div class="input-wrap">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-message-circle"
-                  >
-                    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg
-                  ><input
-                    id="ppf-whatsapp"
-                    type="tel"
-                    inputmode="tel"
-                    autocomplete="tel"
-                    placeholder="+91 98765 43210"
-                    required=""
-                    maxlength="24"
-                    disabled=""
-                    aria-invalid="false"
-                    name="whatsapp"
-                    value=""
-                  />
-                </div>
-              </div>
-            </div>
-            <label class="marketing-consent"
-              ><input type="checkbox" disabled="" /><span
-                >Yes, I’d also like occasional studio growth tips and offers by
-                email and WhatsApp.
-                <span class="optional">(Optional)</span></span
-              ></label
-            >
-            <p id="ppf-form-error" class="form-error" role="alert" hidden></p>
-            <button class="primary-button" type="submit" disabled="">
-              Get My Free Guide
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="19"
-                height="19"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-arrow-right"
-                aria-hidden="true"
-              >
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </button>
-            <p class="microcopy">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-lock-keyhole"
-              >
-                <circle cx="12" cy="16" r="1"></circle>
-                <rect x="3" y="10" width="18" height="12" rx="2"></rect>
-                <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
-              </svg>
-              Free download. No payment required.
-            </p>
-            <p id="ppf-setup-note" class="development-note">
-              Setup preview · lead capture and guide delivery are not connected.
-            </p>
-          </form>
-          <div class="form-divider"></div>
-          <div class="privacy-note">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-shield-check"
-            >
-              <path
-                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
-              ></path>
-              <path d="m9 12 2 2 4-4"></path>
-            </svg>
-            <p>
-              We use your email to deliver the guide and store your WhatsApp
-              number with your request. WhatsApp messages and promotional
-              follow-up are only sent if you opt in above.
-            </p>
-          </div>
-          <span data-privacy class="privacy-placeholder"
-            >Privacy Policy — content pending</span
-          >
-        </div>
-      </div>
-    </section>
-    <section class="reassurance">
-      <div class="container">
-        <span class="reassurance-line"></span>
-        <h2>Your PPF package is premium. Your offer should communicate why.</h2>
-        <p>Built for established PPF and detailing studios.</p>
       </div>
     </section>
   </main>
-  <footer class="footer container">
-    <div class="footer-brand">[Your agency name]</div>
-    <div class="footer-links">
-      <span data-privacy>Privacy Policy (coming soon)</span
-      ><span id="ppf-copyright">© 2026 PPF Growth Resources</span>
-    </div>
-    <div class="analytics-choice">
-      <label
-        ><input type="checkbox" />Allow optional analytics &amp; advertising
-        measurement</label
-      ><span>Off by default. You can change this anytime.</span>
-    </div>
-  </footer>
 </div>
 <script>
   (() => {
     "use strict";
-    // PUBLIC SETTINGS ONLY. Never paste Systeme.io API keys, CRM tokens, or provider secrets here.
     const CONFIG = {
-      leadEndpoint: "", // HTTPS public lead API with server validation + CORS for your Systeme.io page.
       guideCoverUrl:
-        "https://d1yei2z3i6k35z.cloudfront.net/1498607/6acce6c85f5cf7.16078938_PPFofferchecklistcoverph.png", // Public HTTPS URL of the genuine uploaded guide cover.
-      privacyPolicyUrl: "", // Your genuine HTTPS privacy policy URL.
-      agencyName: "", // Your real agency name.
-      ga4Id: "", // Optional real G-... ID; loaded only after measurement consent.
-      metaPixelId: "", // Optional real numeric ID; loaded only after measurement consent.
+        "https://d1yei2z3i6k35z.cloudfront.net/1498607/6acce6c85f5cf7.16078938_PPFofferchecklistcoverph.png",
     };
     const root = document.getElementById("ppf-landing");
     if (!root || root.dataset.initialized === "true") return;
     root.dataset.initialized = "true";
-    const form = root.querySelector("form");
-    const emailInput = root.querySelector("#ppf-email");
-    const whatsappInput = root.querySelector("#ppf-whatsapp");
-    const marketing = root.querySelector(".marketing-consent input");
-    const submit = root.querySelector('button[type="submit"]');
-    const error = root.querySelector("#ppf-form-error");
-    const note = root.querySelector("#ppf-setup-note");
-    const analyticsConsent = root.querySelector(".analytics-choice input");
-    const buttonContent = submit.innerHTML;
-    const method = "email";
-    let busy = false,
-      started = false,
-      attempt = null,
-      measurement = false;
-    const campaign = "70k-ppf-offer-secret";
-    const secureUrl = (value) => {
-      try {
-        const url = new URL(value);
-        return url.protocol === "https:" && !url.username && !url.password
-          ? url.href
-          : null;
-      } catch {
-        return null;
-      }
+    const image = root.querySelector(".guide-cover-image");
+    const placeholder = root.querySelector(".cover-placeholder");
+    const showCover = () => {
+      image.hidden = false;
+      placeholder.hidden = true;
     };
-    const endpoint = secureUrl(CONFIG.leadEndpoint);
-    const policy = secureUrl(CONFIG.privacyPolicyUrl);
-    const coverUrl = secureUrl(CONFIG.guideCoverUrl);
-    if (coverUrl) {
-      const image = root.querySelector(".guide-cover-image");
-      const placeholder = root.querySelector(".cover-placeholder");
-      image.addEventListener("load", () => {
-        image.hidden = false;
-        placeholder.hidden = true;
-      });
-      image.addEventListener("error", () => {
-        image.hidden = true;
-        placeholder.hidden = false;
-        placeholder.querySelector("p").textContent =
-          "Guide cover could not be loaded.";
-      });
-      image.src = coverUrl;
+    const unavailable = () => {
+      image.hidden = true;
+      placeholder.hidden = false;
+    };
+    image.addEventListener("load", showCover);
+    image.addEventListener("error", unavailable);
+    try {
+      const url = new URL(CONFIG.guideCoverUrl);
+      if (
+        url.protocol === "https:" &&
+        !url.username &&
+        !url.password &&
+        image.src !== url.href
+      )
+        image.src = url.href;
+    } catch {
+      /* The supplied static image src is retained. */
     }
-    if (CONFIG.agencyName.trim())
-      root.querySelector(".footer-brand").textContent = CONFIG.agencyName;
-    root.querySelector("#ppf-copyright").textContent =
-      `© ${new Date().getFullYear()} ${CONFIG.agencyName.trim() || "PPF Growth Resources"}`;
-    if (policy) {
-      root.querySelectorAll("[data-privacy]").forEach((placeholder) => {
-        const link = document.createElement("a");
-        link.href = policy;
-        link.textContent = "Privacy Policy";
-        link.className = placeholder.className;
-        placeholder.replaceWith(link);
-      });
-    }
-    if (endpoint && policy) note.hidden = true;
-    // These custom hooks contain no raw contact details or UTM values.
-    function track(event, properties = {}) {
-      const safe = Object.fromEntries(
-        Object.entries(properties).filter(([key]) =>
-          ["method", "mode", "delivery"].includes(key),
-        ),
-      );
-      root.dispatchEvent(
-        new CustomEvent("ppf:analytics", {
-          bubbles: true,
-          detail: { event, ...safe },
-        }),
-      );
-      if (measurement) {
-        window.gtag?.("event", event, safe);
-        window.fbq?.("trackCustom", event, safe);
-      }
-    }
-    track("landing_page_view");
-    analyticsConsent.addEventListener("change", () => {
-      if (!analyticsConsent.checked) {
-        measurement = false;
-        window.gtag?.("consent", "update", {
-          analytics_storage: "denied",
-          ad_storage: "denied",
-          ad_user_data: "denied",
-          ad_personalization: "denied",
-        });
-        window.fbq?.("consent", "revoke");
-        return;
-      }
-      measurement = true;
-      if (/^G-[A-Z0-9]+$/.test(CONFIG.ga4Id)) {
-        if (!window.gtag) {
-          window.dataLayer = window.dataLayer || [];
-          window.gtag = function () {
-            window.dataLayer.push(arguments);
-          };
-          const script = document.createElement("script");
-          script.async = true;
-          script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(CONFIG.ga4Id)}`;
-          document.head.appendChild(script);
-          window.gtag("js", new Date());
-          window.gtag("config", CONFIG.ga4Id, { send_page_view: false });
-        }
-        window.gtag("consent", "update", {
-          analytics_storage: "granted",
-          ad_storage: "denied",
-          ad_user_data: "denied",
-          ad_personalization: "denied",
-        });
-        window.gtag("event", "landing_page_view");
-      }
-      if (/^\d+$/.test(CONFIG.metaPixelId)) {
-        if (!window.fbq) {
-          const fbq = function () {
-            fbq.callMethod
-              ? fbq.callMethod.apply(fbq, arguments)
-              : fbq.queue.push(arguments);
-          };
-          fbq.queue = [];
-          fbq.loaded = true;
-          fbq.version = "2.0";
-          window.fbq = fbq;
-          window._fbq = fbq;
-          const script = document.createElement("script");
-          script.async = true;
-          script.src = "https://connect.facebook.net/en_US/fbevents.js";
-          document.head.appendChild(script);
-          fbq("init", CONFIG.metaPixelId);
-        }
-        window.fbq("consent", "grant");
-        window.fbq("trackCustom", "landing_page_view");
-      }
-    });
-    function showError(message) {
-      error.textContent = message;
-      error.hidden = false;
-    }
-    function clearError() {
-      error.hidden = true;
-      error.textContent = "";
-      [emailInput, whatsappInput].forEach((input) => {
-        input.removeAttribute("aria-invalid");
-        input.removeAttribute("aria-describedby");
-      });
-    }
-    function disabled(value) {
-      form.querySelectorAll("input, button, fieldset").forEach((control) => {
-        control.disabled = value;
-      });
-    }
-    [emailInput, whatsappInput].forEach((input) => {
-      input.addEventListener("focus", () => {
-        if (!started) {
-          started = true;
-          track("lead_form_started", { method });
-        }
-      });
-      input.addEventListener("input", clearError);
-    });
-    function normalize(channel, value) {
-      value = value.trim();
-      if (channel === "email")
-        return value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-          ? value.toLowerCase()
-          : null;
-      if (!/^[+\d\s()-]+$/.test(value)) return null;
-      let digits = value.replace(/\D/g, "");
-      if (digits.startsWith("0091") && digits.length === 14)
-        digits = digits.slice(4);
-      else if (digits.startsWith("91") && digits.length === 12)
-        digits = digits.slice(2);
-      else if (digits.startsWith("0") && digits.length === 11)
-        digits = digits.slice(1);
-      return /^[6-9]\d{9}$/.test(digits) ? "+91" + digits : null;
-    }
-    function uuid() {
-      if (crypto.randomUUID) return crypto.randomUUID();
-      const bytes = crypto.getRandomValues(new Uint8Array(16));
-      bytes[6] = (bytes[6] & 15) | 64;
-      bytes[8] = (bytes[8] & 63) | 128;
-      const hex = Array.from(bytes, (b) =>
-        b.toString(16).padStart(2, "0"),
-      ).join("");
-      return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
-    }
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      if (busy) return;
-      clearError();
-      const email = normalize("email", emailInput.value),
-        whatsapp = normalize("whatsapp", whatsappInput.value);
-      if (!email || !whatsapp) {
-        const invalid = !email ? emailInput : whatsappInput;
-        showError(
-          !email
-            ? "Enter a valid email address."
-            : "Enter a valid 10-digit Indian WhatsApp number, optionally with +91.",
-        );
-        invalid.setAttribute("aria-invalid", "true");
-        invalid.setAttribute("aria-describedby", "ppf-form-error");
-        invalid.focus();
-        return;
-      }
-      if (!endpoint || !policy) {
-        showError(
-          "Guide requests are not connected yet. No contact details have been saved and no guide has been sent.",
-        );
-        return;
-      }
-      const params = new URLSearchParams(window.location.search);
-      const utm = Object.fromEntries(
-        [
-          "utm_source",
-          "utm_medium",
-          "utm_campaign",
-          "utm_term",
-          "utm_content",
-        ].map((key) => [
-          key,
-          (params.get(key) || "").replace(/[\u0000-\u001f]/g, "").slice(0, 200),
-        ]),
-      );
-      const key = JSON.stringify({
-        method,
-        email,
-        whatsapp,
-        marketingConsent: marketing.checked,
-        utm,
-      });
-      if (!attempt || attempt.key !== key) attempt = { key, id: uuid() };
-      const submittedAt = new Date().toISOString();
-      const payload = {
-        method,
-        email,
-        whatsapp,
-        contact: email,
-        captureMethod: "email_and_whatsapp",
-        deliveryChannel: "email",
-        marketingConsent: marketing.checked,
-        requestId: attempt.id,
-        utm,
-        sourceCampaign: campaign,
-        submittedAt,
-        consent: {
-          guideRequested: true,
-          marketing: marketing.checked,
-          noticeVersion: "guide-request-email-and-whatsapp-v2",
-          recordedAt: submittedAt,
-          channel: "email",
-          whatsappGuideRequested: false,
-          marketingChannels: marketing.checked ? ["email", "whatsapp"] : [],
-        },
-      };
-      busy = true;
-      disabled(true);
-      submit.textContent = "Saving your request…";
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 15000);
-      try {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-          signal: controller.signal,
-          credentials: "omit",
-          redirect: "error",
-        });
-        if (!response.ok)
-          throw new Error(
-            "Your request could not be confirmed. Please try again.",
-          );
-        const receipt = await response.json();
-        const development = receipt.status === "development";
-        if (
-          receipt.stored === false ||
-          (!["captured", "development"].includes(receipt.status) &&
-            receipt.stored !== true) ||
-          !["sent", "queued", "unavailable"].includes(receipt.delivery)
-        )
-          throw new Error(
-            "The lead system returned an unconfirmed receipt. Please try again.",
-          );
-        const panel = document.createElement("div");
-        panel.className = "success-panel";
-        panel.setAttribute("role", "status");
-        panel.setAttribute("aria-live", "polite");
-        const title = document.createElement("h3");
-        title.textContent = development
-          ? "Test request saved"
-          : "Thank you for your request";
-        panel.appendChild(title);
-        const message = document.createElement("p");
-        message.textContent = development
-          ? "Development mode: your test request was saved by the test endpoint. No email or WhatsApp message was sent."
-          : receipt.delivery === "sent"
-            ? `Your guide has been sent by ${method === "email" ? "email" : "WhatsApp"}.`
-            : receipt.delivery === "queued"
-              ? `Your request is saved. Guide delivery by ${method === "email" ? "email" : "WhatsApp"} is queued.`
-              : "Your request is saved, but guide delivery is not available yet.";
-        panel.appendChild(message);
-        // The trusted server must return a URL only for the genuine updated ₹70K+ PDF.
-        let download = null;
-        if (typeof receipt.downloadUrl === "string") {
-          try {
-            download = secureUrl(new URL(receipt.downloadUrl, endpoint).href);
-          } catch {
-            /* Keep download unavailable. */
-          }
-        }
-        if (download) {
-          const link = document.createElement("a");
-          link.className = "primary-button download-button";
-          link.href = download;
-          link.textContent = "Download Your Free Guide";
-          link.rel = "noopener";
-          link.addEventListener("click", () =>
-            track("guide_download_clicked", { method }),
-          );
-          panel.appendChild(link);
-        } else {
-          const missing = document.createElement("p");
-          missing.className = "asset-note";
-          missing.textContent =
-            "The updated ₹70K+ guide PDF is not available yet. No download is available.";
-          panel.appendChild(missing);
-        }
-        form.replaceWith(panel);
-        track("lead_form_submitted", {
-          method,
-          mode: development ? "development" : "captured",
-          delivery: receipt.delivery,
-        });
-      } catch (failure) {
-        showError(
-          failure.name === "AbortError"
-            ? "The request timed out. Please retry."
-            : failure.message ||
-                "We could not confirm your request. Please try again.",
-        );
-      } finally {
-        clearTimeout(timer);
-        busy = false;
-        disabled(false);
-        submit.innerHTML = buttonContent;
-      }
-    });
-    disabled(false);
+    if (image.complete) image.naturalWidth > 0 ? showCover() : unavailable();
+    root.dispatchEvent(
+      new CustomEvent("ppf:analytics", {
+        bubbles: true,
+        detail: { event: "landing_page_view" },
+      }),
+    );
   })();
 </script>

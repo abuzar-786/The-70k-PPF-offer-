@@ -50,7 +50,6 @@ button:disabled {
   outline: 3px solid var(--lime);
   outline-offset: 4px;
 }
-.form-shell :focus-visible,
 .footer :focus-visible {
   outline-color: var(--ink);
 }
@@ -104,7 +103,7 @@ input:focus-visible {
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "copy" "guide" "form";
+  grid-template-areas: "copy" "guide";
   gap: 28px;
   padding: 30px 0 40px;
   align-items: start;
@@ -282,257 +281,6 @@ h1 span {
   margin: 20px 0 0;
   color: var(--ink);
 }
-.form-shell {
-  grid-area: form;
-  background: var(--porcelain);
-  color: var(--ink);
-  padding: 26px 22px;
-  border: 1px solid var(--silver);
-  border-radius: 16px;
-  box-shadow: 0 18px 40px #0000001c;
-  min-width: 0;
-  text-align: left;
-  width: 100%;
-  max-width: 620px;
-  margin: 0 auto;
-}
-.form-topline {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 19px;
-}
-.small-pill {
-  font-size: 9px;
-  letter-spacing: 1px;
-  font-weight: 700;
-  color: var(--ink);
-  background: var(--lime);
-  padding: 6px 9px;
-  border-radius: 5px;
-}
-.form-step {
-  font-size: 7px;
-  letter-spacing: 1px;
-  color: var(--ink);
-}
-.form-shell h2 {
-  font-size: 27px;
-  line-height: 1.2;
-  letter-spacing: -0.85px;
-  font-weight: 650;
-  margin: 0 0 10px;
-  color: var(--ink);
-  text-align: left;
-  overflow-wrap: break-word;
-}
-.form-description {
-  font-size: 13px;
-  line-height: 1.8;
-  color: var(--ink);
-  margin: 0 0 25px;
-  text-align: left;
-  margin-bottom: 22px;
-}
-.form-fields {
-  display: grid;
-  gap: 16px;
-}
-.input-label {
-  display: block;
-  font-size: 12px;
-  font-weight: 650;
-  margin: 0 0 9px;
-  text-align: left;
-  color: var(--ink);
-}
-.input-wrap {
-  position: relative;
-}
-.input-wrap > svg {
-  position: absolute;
-  left: 15px;
-  top: 18px;
-  color: var(--muted);
-  pointer-events: none;
-}
-.input-wrap input {
-  display: block;
-  width: 100%;
-  height: 56px;
-  border: 1px solid var(--silver);
-  border-radius: 9px;
-  padding: 0 13px 0 44px;
-  background: var(--porcelain);
-  color: var(--ink);
-  font-size: 16px;
-  line-height: 1.4;
-  transition:
-    border-color 0.15s,
-    box-shadow 0.15s;
-  box-shadow: none;
-  min-width: 0;
-}
-.input-wrap input::placeholder {
-  color: #51585e;
-}
-.input-wrap input:focus {
-  border-color: var(--ink);
-  box-shadow: 0 0 0 1px var(--ink);
-}
-.input-wrap input[aria-invalid="true"] {
-  border-color: #a22a21;
-}
-.marketing-consent {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 11px;
-  line-height: 1.75;
-  color: var(--ink);
-  margin: 20px 0 23px;
-  cursor: pointer;
-  text-align: left;
-  min-height: 44px;
-}
-.marketing-consent input {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 18px;
-  margin: 3px 0 0;
-  accent-color: var(--ink);
-}
-.optional {
-  white-space: nowrap;
-}
-.primary-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  width: 100%;
-  min-height: 58px;
-  padding: 12px 16px;
-  background: var(--lime);
-  border: 1px solid var(--lime);
-  border-radius: 9px;
-  color: var(--ink);
-  font-weight: 750;
-  font-size: 15px;
-  line-height: 1.5;
-  text-decoration: none;
-  transition:
-    filter 0.15s,
-    transform 0.15s;
-  white-space: normal;
-}
-.primary-button:hover:not(:disabled) {
-  filter: brightness(0.94);
-  transform: translateY(-1px);
-}
-.microcopy {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  color: var(--ink);
-  font-size: 11px;
-  line-height: 1.6;
-  margin: 13px 0 0;
-  text-align: center;
-}
-.development-note {
-  font-size: 11px;
-  line-height: 1.7;
-  color: var(--ink);
-  padding: 10px 12px;
-  background: #b8bec422;
-  border: 1px solid var(--silver);
-  border-radius: 7px;
-  margin: 17px 0 0;
-  text-align: left;
-}
-.form-divider {
-  height: 1px;
-  background: var(--silver);
-  margin: 24px 0 19px;
-}
-.privacy-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  color: var(--muted);
-  text-align: left;
-}
-.privacy-note svg {
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-.privacy-note p {
-  font-size: 11px;
-  line-height: 1.8;
-  color: var(--ink);
-  margin: 0;
-}
-.privacy-link,
-.privacy-placeholder {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--ink);
-  margin: 10px 0 0 28px;
-}
-.privacy-link {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.form-error {
-  font-size: 12px;
-  line-height: 1.65;
-  color: #84281f;
-  padding: 12px;
-  border: 1px solid #a22a2166;
-  background: #f3e8e5;
-  border-radius: 7px;
-  margin: 0 0 14px;
-}
-.success-panel {
-  padding: 12px 0 4px;
-  text-align: left;
-}
-.success-icon {
-  width: 45px;
-  height: 45px;
-  display: grid;
-  place-items: center;
-  background: var(--lime);
-  color: var(--ink);
-  border-radius: 50%;
-  margin-bottom: 16px;
-}
-.success-panel h3 {
-  font-size: 23px;
-  letter-spacing: -0.5px;
-  margin: 0 0 10px;
-}
-.success-panel p {
-  font-size: 13px;
-  line-height: 1.8;
-  color: var(--ink);
-}
-.success-panel .asset-note {
-  font-size: 12px;
-  background: #b8bec422;
-  padding: 12px;
-  border: 1px solid var(--silver);
-  border-radius: 7px;
-}
-.download-button {
-  margin: 18px 0;
-}
 .reassurance {
   background: var(--porcelain);
   color: var(--ink);
@@ -613,14 +361,6 @@ h1 span {
   flex: 0 0 16px;
   margin: 0;
 }
-.spinner {
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -631,9 +371,6 @@ h1 span {
     animation: none !important;
     transition: none !important;
   }
-  .primary-button:hover:not(:disabled) {
-    transform: none;
-  }
 }
 @container ppf (min-width: 600px) {
   .guide-card {
@@ -642,9 +379,6 @@ h1 span {
   }
   .cover-frame {
     width: 240px;
-  }
-  .form-shell {
-    padding: 32px;
   }
   .hero-grid {
     padding-top: 42px;
@@ -661,7 +395,7 @@ h1 span {
   .hero-grid {
     width: min(1160px, calc(100% - 64px));
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas: "copy guide" "form form";
+    grid-template-areas: "copy guide";
     gap: 40px 48px;
     padding: 56px 0;
   }
@@ -693,11 +427,5 @@ h1 span {
   }
   .guide-card {
     padding: 18px;
-  }
-  .form-shell {
-    padding: 23px 19px;
-  }
-  .form-step {
-    font-size: 6.5px;
   }
 }
